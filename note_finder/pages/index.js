@@ -1,15 +1,64 @@
-import React, { useState } from 'react';
-import { Form, Input, Select, Button } from 'antd';
+import { useEffect, useState } from "react";
+import { Form, Input, Select, Button } from "antd";
 
 const { Option } = Select;
 
-import styles from '../styles/searchPage.module.css';
+import styles from "../styles/searchPage.module.css";
+import ResultCards from "../components/ResultCards";
+
+import { neuroExamples, compScienceExamples, searchData } from "../../examples";
 
 const SearchPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [fileType, setFileType] = useState([]);
   const [loading, setLoading] = useState(false);
   const [firstSearch, setFirstSearch] = useState(true);
+  const [searchResults, setSearchResults] = useState([]);
+  const [sortValue, setSortValue] = useState("matchPct");
+
+  useEffect(() => {
+    console.log(`Sort value changed to ${sortValue}`);
+    let temp = [...searchData];
+    // if search term is neuroscience, neuro, neuron, etc, include the neuroExamples
+    if (searchTerm.toLowerCase().includes("neur")) {
+      temp = [...temp, ...neuroExamples];
+    }
+
+    // if search term is computer science, comp sci, etc, include the compScienceExamples
+    if (
+      searchTerm.toLowerCase().includes("comp") ||
+      searchTerm.toLowerCase().includes("sci")
+    ) {
+      temp = [...temp, ...compScienceExamples];
+    }
+
+    if (sortValue === "matchPct") {
+      temp.sort((a, b) => b.matchPct - a.matchPct);
+    } else if (sortValue === "matchPctInverted") {
+      temp.sort((a, b) => a.matchPct - b.matchPct);
+    } else if (sortValue === "alphabetical") {
+      temp.sort((a, b) => {
+        if (a.title < b.title) {
+          return -1;
+        }
+        if (a.title > b.title) {
+          return 1;
+        }
+        return 0;
+      });
+    } else if (sortValue === "alphabeticalInverted") {
+      temp.sort((a, b) => {
+        if (a.title < b.title) {
+          return 1;
+        }
+        if (a.title > b.title) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+    setSearchResults(temp);
+  }, [sortValue]);
 
   const handleSearch = () => {
     setLoading(true);
@@ -17,43 +66,22 @@ const SearchPage = () => {
     // create loading state and show loading indicator for a short time to simulate a search
     setTimeout(() => {
       // remove loading state and show search results
-      if (firstSearch){
+      if (firstSearch) {
         setFirstSearch(false);
       }
       setLoading(false);
     }, 1000);
-  }
+  };
 
   const resetSearchHandler = (e) => {
     e.preventDefault();
-    setSearchTerm('');
+    setSearchTerm("");
     setFileType([]);
     setFirstSearch(true);
-  }
-
-  // create dummy search results from a database of notes
-  const searchResults = [
-    {
-      title: 'Search Result 1',
-      description: 'Search result 1 description',
-      matchPct: 100,
-    }, {
-      title: 'Search Result 2',
-      description: 'Search result 2 description',
-      matchPct: 90,
-    }, {
-      title: 'Search Result 3',
-      description: 'Search result 3 description',
-      matchPct: 80,
-    }, {
-      title: 'Search Result 4',
-      description: 'Search result 4 description',
-      matchPct: 70,
-    }
-  ];
+  };
 
   return (
-    <div className={styles['search-page']}>
+    <div className={styles["search-page"]}>
       <h1>Search</h1>
       {console.log()}
       <Form layout="horizontal">
@@ -62,7 +90,7 @@ const SearchPage = () => {
             required={true}
             placeholder="Search term"
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Form.Item>
         <Form.Item>
@@ -70,7 +98,7 @@ const SearchPage = () => {
             mode="multiple"
             placeholder="File type"
             value={fileType}
-            onChange={value => setFileType(value)}
+            onChange={(value) => setFileType(value)}
           >
             <Option value="pdf">PDF</Option>
             <Option value="doc">DOC</Option>
@@ -79,30 +107,37 @@ const SearchPage = () => {
           </Select>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" onClick={handleSearch}>Search</Button>
+          <Button type="primary" onClick={handleSearch}>
+            Search
+          </Button>
         </Form.Item>
         {/* reset filters button */}
         <Form.Item>
-          <Button onClick={(e) => {
-            resetSearchHandler(e);
-          }}>Reset Search</Button>
+          <Button
+            onClick={(e) => {
+              resetSearchHandler(e);
+            }}
+          >
+            Reset Search
+          </Button>
         </Form.Item>
       </Form>
       {firstSearch ? (
         <p>Enter a search term and file type to begin searching.</p>
-      ) : (<div className="styles.search-results">
-      {loading ? (
-        <div>Loading...</div>
       ) : (
-        searchResults.map((result, index) => (
-          <div className={styles["search-result"]} key={index}>
-            <div className={styles["search-result-title"]}>{result.title}</div>
-            <div className={styles["search-result-description"]}>{result.description}</div>
-            <div className={styles["search-result-match-pct"]}>{result.matchPct}% match</div>
-          </div>
-        ))
-      )}
-    </div>
+        <div className="styles.search-results">
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <div>
+              <ResultCards
+                searchResults={searchResults}
+                setSortValue={setSortValue}
+                sortValue={sortValue}
+              />
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

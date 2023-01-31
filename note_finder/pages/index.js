@@ -95,7 +95,7 @@ const SearchPage = () => {
         <Form.Item>
           <Input
             required={true}
-            placeholder="Search term"
+            placeholder="Search terms"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

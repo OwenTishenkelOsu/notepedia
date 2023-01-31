@@ -6,7 +6,7 @@ const { Option } = Select;
 import styles from "../styles/searchPage.module.css";
 import ResultCards from "../components/ResultCards";
 
-import { neuroExamples, compScienceExamples, searchData } from "../../examples";
+import { neuroExamples, compScienceExamples, searchData } from "../examples";
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -68,9 +68,10 @@ const SearchPage = () => {
       // remove loading state and show search results
       if (firstSearch) {
         setFirstSearch(false);
+        setSortValue("matchPct");
       }
       setLoading(false);
-    }, 1000);
+    }, 2000);
   };
 
   const resetSearchHandler = (e) => {
@@ -79,6 +80,12 @@ const SearchPage = () => {
     setFileType([]);
     setFirstSearch(true);
   };
+
+  // useEffect(() => {
+  //   if (searchResults.length > 0) {
+  //     setLoading(false);
+  //   }
+  // }, [searchResults]);
 
   return (
     <div className={styles["search-page"]}>

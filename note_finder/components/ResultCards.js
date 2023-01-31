@@ -183,7 +183,7 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                     <strong>File Type:</strong> {result.fileType}
                   </div>
                   <div style={fullTextStyle}>
-                    <strong>Full Text:</strong> {result.fullText}
+                    <strong>Text Snippet:</strong> {result.fullText}
                   </div>
                   <div style={matchedPortionStyle}>
                     <strong>Matched Portion:</strong> {result.matchedPortion}

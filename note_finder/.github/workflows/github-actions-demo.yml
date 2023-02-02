@@ -1,0 +1,2 @@
+- name: Python-lint-annotate: maintain code quality with annotated PRs and pushes
+  uses: marian-code/python-lint-annotate@v3

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Form, Input, Select, Button } from "antd";
 
 
+
+
 const { Option } = Select;
 const https = require('https');
 import styles from "../styles/searchPage.module.css";
@@ -60,24 +62,31 @@ const SearchPage = () => {
     }
     setSearchResults(temp);
   }, [sortValue]);
-    const agent = new https.Agent({
-        rejectUnauthorized: false,
-    });
+
+    const options = {
+            
+            rejectUnauthorized: false,
+
+            keepAlive: true,
+        };
+        // we're creating a new Agent that will now use the certs we have configured
+    const sslConfiguredAgent = new https.Agent(options);
     // write a function to call an Api to get search results
     // write a function to call an Api to get search results
     const getSearchResults = async () => {
-        const response = await fetch('https://localhost:9200/notes/_doc/1',  {agent,
+        const response = await fetch('http://localhost:9200/notes/_doc/1', {
+            agent: sslConfiguredAgent,
+            mode: 'no-cors',
             method: "GET",
             headers: {
-            "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "https://localhost:9200/",
+                "Content-Type": "application/json",
                 "Authorization": "Basic ZWxhc3RpYzplNVhKUG1ZRmtVT09tdDl4aUkrKg=="
             },
-            redirect:"follow",
-    });
-    const data = await response.json();
-    console.log(data);
-};
+        });
+        const string = await response.text();
+        const data  = string === "" ? {} : JSON.parse(string);
+        console.log(data);
+    };
 
 
     const handleSearch = () => {

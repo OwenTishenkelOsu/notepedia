@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Form, Input, Select, Button } from "antd";
 
-const { Option } = Select;
 
+const { Option } = Select;
+const https = require('https');
 import styles from "../styles/searchPage.module.css";
 import ResultCards from "../components/ResultCards";
 
@@ -59,20 +60,40 @@ const SearchPage = () => {
     }
     setSearchResults(temp);
   }, [sortValue]);
+    const agent = new https.Agent({
+        rejectUnauthorized: false,
+    });
+    // write a function to call an Api to get search results
+    // write a function to call an Api to get search results
+    const getSearchResults = async () => {
+        const response = await fetch('https://localhost:9200/notes/_doc/1',  {agent,
+            method: "GET",
+            headers: {
+            "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "https://localhost:9200/",
+                "Authorization": "Basic ZWxhc3RpYzplNVhKUG1ZRmtVT09tdDl4aUkrKg=="
+            },
+            redirect:"follow",
+    });
+    const data = await response.json();
+    console.log(data);
+};
 
-  const handleSearch = () => {
-    setLoading(true);
-    console.log(`Searching for "${searchTerm}" of type "${fileType}"`);
-    // create loading state and show loading indicator for a short time to simulate a search
-    setTimeout(() => {
-      // remove loading state and show search results
-      if (firstSearch) {
-        setFirstSearch(false);
-        setSortValue("matchPct");
-      }
-      setLoading(false);
-    }, 2000);
-  };
+
+    const handleSearch = () => {
+        setLoading(true);
+        console.log(`Searching for ${searchTerm} of type ${fileType}`);
+        getSearchResults();
+        // create loading state and show loading indicator for a short time to simulate a search
+        setTimeout(() => {
+            // remove loading state and show search results
+            if (firstSearch) {
+                setFirstSearch(false);
+                setSortValue("matchPct");
+            }
+            setLoading(false);
+        }, 2000);
+    };
 
   const resetSearchHandler = (e) => {
     e.preventDefault();

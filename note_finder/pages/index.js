@@ -67,24 +67,24 @@ const SearchPage = () => {
             
             rejectUnauthorized: false,
 
-            keepAlive: true,
+            keepAlive: false,
         };
         // we're creating a new Agent that will now use the certs we have configured
     const sslConfiguredAgent = new https.Agent(options);
     // write a function to call an Api to get search results
     // write a function to call an Api to get search results
+    //notes/_doc/1 "Content-Type": "application/json"
+    var requestOptions = {
+        agent: sslConfiguredAgent,
+        method: "GET",
+        headers: {
+            "Authorization": "Basic ZWxhc3RpYzplNVhKUG1ZRmtVT09tdDl4aUkrKg==",
+            
+        },
+    };
     const getSearchResults = async () => {
-        const response = await fetch('http://localhost:9200/notes/_doc/1', {
-            agent: sslConfiguredAgent,
-            mode: 'no-cors',
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Basic ZWxhc3RpYzplNVhKUG1ZRmtVT09tdDl4aUkrKg=="
-            },
-        });
-        const string = await response.text();
-        const data  = string === "" ? {} : JSON.parse(string);
+        const response = await fetch('http://localhost:9200/', requestOptions);
+        const data = await response.text();
         console.log(data);
     };
 

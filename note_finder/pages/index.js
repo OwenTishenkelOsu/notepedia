@@ -59,7 +59,14 @@ const SearchPage = () => {
     }
     setSearchResults(temp);
   }, [sortValue]);
+    var requestOptions = {
+        agent: sslConfiguredAgent,
+        method: "GET",
+        headers: {
+            "Authorization": "Basic ZWxhc3RpYzplNVhKUG1ZRmtVT09tdDl4aUkrKg==",
 
+        },
+    };
   const handleSearch = () => {
     setLoading(true);
     console.log(`Searching for "${searchTerm}" of type "${fileType}"`);
@@ -72,7 +79,12 @@ const SearchPage = () => {
       }
       setLoading(false);
     }, 2000);
-  };
+    };
+    const getSearchResults = async () => {
+        const response = await fetch('http://localhost:9200/', requestOptions);
+        const data = await response.text();
+        console.log(data);
+    };
 
   const resetSearchHandler = (e) => {
     e.preventDefault();

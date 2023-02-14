@@ -19,10 +19,10 @@ jobs:
         node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     env:
-            working-directory: notepedia\note_finder
+            working-directory: ./note_finder
     defaults:
         run:
-            working-directory: notepedia\note_finder
+            working-directory: ./note_finder
 
     steps:
     - uses: actions/checkout@v3

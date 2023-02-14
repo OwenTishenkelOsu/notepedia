@@ -60,7 +60,6 @@ const SearchPage = () => {
     setSearchResults(temp);
   }, [sortValue]);
     var requestOptions = {
-        agent: sslConfiguredAgent,
         method: "GET",
         headers: {
             "Authorization": "Basic ZWxhc3RpYzplNVhKUG1ZRmtVT09tdDl4aUkrKg==",

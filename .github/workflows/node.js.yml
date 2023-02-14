@@ -18,6 +18,9 @@ jobs:
       matrix:
         node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    defaults:
+        run:
+            working-directory: notepedia\note_finder
 
     steps:
     - uses: actions/checkout@v3
@@ -28,8 +31,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-      working-directory: note_finder
     - run: npm run build --if-present
-      working-directory: note_finder
     - run: npm test
-      working-directory: note_finder

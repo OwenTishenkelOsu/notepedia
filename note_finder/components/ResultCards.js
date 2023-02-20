@@ -123,19 +123,15 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
     marginBottom: "20px",
   };
 
-  async function openDocumentHandler(document_id){
+  async function openDocumentHandler(document_id) {
     // the route is note/[note_id]
     // the note_id is the document_id
-    
+
     // open a new tab when the user clicks on the open button
     router.push({
-      pathname: '/note/[note_id]',
+      pathname: "/note/[note_id]",
       query: { note_id: document_id },
-
-    })
-
-    
-
+    });
   }
 
   // return loading if the search results are still loading
@@ -223,11 +219,16 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   </div>
                 </div>
                 <div style={buttonStyle}>
-                  <button style={openButtonStyle} onClick={(e) => {
-                    e.preventDefault();
-                    // open the document in a new tab at route /notes/[note_id]
-                    window.open(`/notes/${result._id}`);
-                  }}>Open in Preview</button>
+                  <button
+                    style={openButtonStyle}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // open the document in a new tab at route /notes/[note_id]
+                      window.open(`/notes/notePage?id=${result._id}`);
+                    }}
+                  >
+                    Open in Preview
+                  </button>
                   <button style={downloadButtonStyle}>Download</button>
                 </div>
               </div>

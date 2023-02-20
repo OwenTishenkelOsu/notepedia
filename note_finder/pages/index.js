@@ -248,7 +248,7 @@ const SearchPage = () => {
               {searchResults.length} results found for "{searchTerm}".
             </p>
           )}
-          
+
         </div>
       </Form>
       {firstSearch ? (

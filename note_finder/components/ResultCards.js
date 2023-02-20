@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+// import router
+import { useRouter } from "next/router";
+
 // React functional component for the search page, to be used to display the search results
 // take as input an array of objects, each object representing a search result
 // each object will have the following properties:
@@ -10,6 +13,9 @@ import { useState, useEffect } from "react";
 //   matchPct: the percentage of the document that matched the search term
 function ResultCards({ searchResults, setSortValue, sortValue }) {
   const [loading, setLoading] = useState(true);
+
+  // use router to redirect to the open page
+  const router = useRouter();
 
   useEffect(() => {
     if (searchResults !== null) {
@@ -117,6 +123,17 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
     marginBottom: "20px",
   };
 
+  async function openDocumentHandler(document_id) {
+    // the route is note/[note_id]
+    // the note_id is the document_id
+
+    // open a new tab when the user clicks on the open button
+    router.push({
+      pathname: "/note/[note_id]",
+      query: { note_id: document_id },
+    });
+  }
+
   // return loading if the search results are still loading
   return (
     <>
@@ -127,18 +144,19 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
           {/* create a dropdown that will sort results based on one of the following: match percentage, alphabetical. Also create a filter results area that can filter out certain file types in the response, or matches below a certain percentage */}
           <div
             style={{
+              // move the dropdown to the right of the page
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "flex-end",
               alignItems: "center",
-              width: "100%",
+              // add bottom margin
               marginBottom: "20px",
             }}
           >
             <div>
               <div
                 style={{
-                  marginBottom: "10px",
+                  marginBottom: "5px",
                 }}
               >
                 Sort by:
@@ -171,56 +189,46 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
           </div>
 
           <div>
-            {searchResults.map((result, index) => (
-              <div style={cardStyle} key={index}>
+            {searchResults.map((result) => (
+              <div style={cardStyle} key={result._id}>
                 <div style={cardContentStyle}>
                   {/* stylize the output data on cards to make visually appealing */}
                   <div style={titleStyle}>
                     {" "}
-                    <strong>Fragment Title:</strong> {result.title}
+                    <strong>Fragment Title:</strong> {result._source.title}
                   </div>
                   <div style={fileTypeStyle}>
-                    <strong>File Type:</strong> {result.fileType}
+                    <strong>File Type:</strong> {result._source.doctype}
                   </div>
                   <div style={fullTextStyle}>
-                    <strong>Text Snippet:</strong> {result.fullText}
-                  </div>
-                  <div style={matchedPortionStyle}>
-                    <strong>Matched Portion:</strong> {result.matchedPortion}
+                    {/* cut text snippet off at 500 characters */}
+                    <strong>Full Text:</strong>{" "}
+                    {result._source.text.substring(0, 500) + "..."}
                   </div>
                   <div
                     style={{
-                      ...matchPctStyle,
-                      //   color code the match percentage based on the percentage. only red green or normal
-                      color:
-                        result.matchPct > 75
-                          ? "green"
-                          : result.matchPct < 50
-                          ? "red"
-                          : "black",
-
                       //   push to the right
                       marginLeft: "auto",
                       //   space above
                       marginTop: "10px",
-                      //   border: "1px solid black",
-                      // border color is  same as the color of the text
-                      border:
-                        result.matchPct > 75
-                          ? "1px solid green"
-                          : result.matchPct < 50
-                          ? "1px solid red"
-                          : "1px solid black",
-
                       borderRadius: "5px",
                       padding: "5px",
                     }}
                   >
-                    <strong>Match Percentage:</strong> {result.matchPct}
+                    <strong>Match Score:</strong> {result._score}
                   </div>
                 </div>
                 <div style={buttonStyle}>
-                  <button style={openButtonStyle}>Open</button>
+                  <button
+                    style={openButtonStyle}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // open the document in a new tab at route /notes/[note_id]
+                      window.open(`/notes/notePage?id=${result._id}`);
+                    }}
+                  >
+                    Open in Preview
+                  </button>
                   <button style={downloadButtonStyle}>Download</button>
                 </div>
               </div>

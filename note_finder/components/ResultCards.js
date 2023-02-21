@@ -126,7 +126,6 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
   async function openDocumentHandler(document_id) {
     // the route is note/[note_id]
     // the note_id is the document_id
-
     // open a new tab when the user clicks on the open button
     router.push({
       pathname: "/note/[note_id]",
@@ -229,7 +228,28 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   >
                     Open in Preview
                   </button>
-                  <button style={downloadButtonStyle}>Download</button>
+                  <button
+                    style={downloadButtonStyle}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log(result._source);
+                      var data = result._source;
+                      var filename = result._source.title;
+                      // Creating a blob object from non-blob data using the Blob constructor
+                      const blob = new Blob([JSON.stringify(data)], {
+                        type: "application/json",
+                      });
+                      const url = URL.createObjectURL(blob);
+                      // Create a new anchor element
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = filename || "download";
+                      a.click();
+                      a.remove();
+                    }}
+                  >
+                    Download
+                  </button>
                 </div>
               </div>
             ))}

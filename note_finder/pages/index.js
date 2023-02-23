@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Form, Input, Select, Button } from "antd";
-
+import { useRouter } from "next/router";
 const { Option } = Select;
 
 import styles from "../styles/searchPage.module.css";
@@ -10,6 +10,12 @@ import ResultCards from "../components/ResultCards";
 import Link from "next/link";
 
 const SearchPage = () => {
+  const [file, setFile] = useState(null);
+
+    const [error, setError] = useState(null);
+    const [submitted, setSubmitted] = useState(false);
+
+    const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [fileType, setFileType] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +25,24 @@ const SearchPage = () => {
   const [searchSuggestions, setSearchSuggestions] = useState(null);
   const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
 
+  async function postNotes(textBody) {
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
+    // allow from localhost
+    myHeaders.append("Content-Type", "application/json");
+    
+    fetch(
+      "http://localhost:9200/notes/_doc",{
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow",
+        body: textBody},
+  ).then(response => response.json())
+  .then(response => console.log(JSON.stringify(response)))
+;
+    
+  }
   // useEffect(() => {
   //   console.log(`Sort value changed to ${sortValue}`);
   //   let temp = [...searchData];
@@ -62,7 +86,25 @@ const SearchPage = () => {
   //   }
   //   setSearchResults(temp);
   // }, [sortValue]);
+  const fileUploadHandler = (e) => {
+    e.preventDefault();
+    console.log("fileUploadHandler called");
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
+    const reader = new FileReader();
+    const selectedFile = e.target.files[0];
+    reader.readAsText(selectedFile); // read the file as text
+    var fileContents;
+    reader.onload = (event) => {
+        fileContents = event.target.result;
+        postNotes(fileContents);
+        console.log("File contents:", fileContents);
+        // do something with the file contents, such as sending them to the server for further processing
+    }
+    
 
+   
+}
   const baseFileTypes= [
     { "fileType": "pdf", "included": true },
     { "fileType": "doc", "included": true },
@@ -140,6 +182,8 @@ const SearchPage = () => {
   return (
     <div className={styles["search-page"]}>
       <h1>Search</h1>
+      
+      <br></br>
       <Form layout="horizontal">
         <Form.Item>
           <Input
@@ -205,6 +249,7 @@ const SearchPage = () => {
                   >
                     {suggestion.text}
                   </Button>
+                  
                 </div>
               ))}
             </div>
@@ -227,6 +272,8 @@ const SearchPage = () => {
             }}>
               Search
             </Button>
+            <input type="file" onChange = {fileUploadHandler}id="input" multiple />
+            
           </Form.Item>
           {/* reset filters button if not on first search */}
           {!firstSearch && (

@@ -202,7 +202,7 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   <div style={fullTextStyle}>
                     {/* cut text snippet off at 500 characters */}
                     <strong>Full Text:</strong>{" "}
-                    {result._source.text.substring(0, 500) + "..."}
+                    {result._source.text?.substring(0, Math.min(result._source.text.length, 500)) + "..."}
                   </div>
                   <div
                     style={{

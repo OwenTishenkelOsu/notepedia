@@ -112,6 +112,7 @@ export async function getElasticNoteById(note_id) {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
+    keepalive: "true"
   };
 
   var url = "http://localhost:9200/notes/_doc/" + note_id;

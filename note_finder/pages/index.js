@@ -25,6 +25,9 @@ const SearchPage = () => {
   const [searchSuggestions, setSearchSuggestions] = useState(null);
   const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
 
+  function clearFiles(){
+    document.getElementById("input").value = "";
+  }
   async function postNotes(textBody) {
 
     var myHeaders = new Headers();
@@ -38,9 +41,15 @@ const SearchPage = () => {
         headers: myHeaders,
         redirect: "follow",
         body: textBody},
-  ).then(response => response.json())
-  .then(response => console.log(JSON.stringify(response)))
+  ).then(response => {if(response.ok){alert(JSON.parse(textBody)["title"] + " Uploaded Successfully");}else{
+    alert(JSON.parse(textBody)["title"] + "Uploaded Unsuccessfully");
+  }
+  clearFiles();})
+  .then(response => console.log(JSON.stringify(response))
+    )
 ;
+    
+    
     
   }
   // useEffect(() => {
@@ -92,17 +101,29 @@ const SearchPage = () => {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
     const reader = new FileReader();
+<<<<<<< Updated upstream
     const selectedFile = e.target.files[0];
     if(selectedFile != null){
+=======
+    console.log(e.target.files.length);
+    for (var i =0;i<e.target.files.length;i++){
+    setFile(e.target.files[i]);
+    const reader = new FileReader();
+      const selectedFile = e.target.files[i];
+>>>>>>> Stashed changes
       reader.readAsText(selectedFile); // read the file as text
       var fileContents;
       reader.onload = (event) => {
           fileContents = event.target.result;
           postNotes(fileContents);
+<<<<<<< Updated upstream
           console.log("File contents:", fileContents);
+=======
+>>>>>>> Stashed changes
           // do something with the file contents, such as sending them to the server for further processing
       }
     }
+    
     
 
    

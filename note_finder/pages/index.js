@@ -42,7 +42,7 @@ const SearchPage = () => {
         redirect: "follow",
         body: textBody},
   ).then(response => {if(response.ok){alert(JSON.parse(textBody)["title"] + " Uploaded Successfully");}else{
-    alert(JSON.parse(textBody)["title"] + "Uploaded Unsuccessfully");
+    alert(JSON.parse(textBody)["title"] + " Uploaded Unsuccessfully");
   }
   clearFiles();})
   .then(response => console.log(JSON.stringify(response))
@@ -97,34 +97,26 @@ const SearchPage = () => {
   // }, [sortValue]);
   const fileUploadHandler = (e) => {
     e.preventDefault();
+    if(e.target.files.length!=0){
     console.log("fileUploadHandler called");
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
     const reader = new FileReader();
-<<<<<<< Updated upstream
-    const selectedFile = e.target.files[0];
-    if(selectedFile != null){
-=======
     console.log(e.target.files.length);
     for (var i =0;i<e.target.files.length;i++){
     setFile(e.target.files[i]);
     const reader = new FileReader();
       const selectedFile = e.target.files[i];
->>>>>>> Stashed changes
       reader.readAsText(selectedFile); // read the file as text
       var fileContents;
       reader.onload = (event) => {
           fileContents = event.target.result;
           postNotes(fileContents);
-<<<<<<< Updated upstream
-          console.log("File contents:", fileContents);
-=======
->>>>>>> Stashed changes
           // do something with the file contents, such as sending them to the server for further processing
       }
     }
     
-    
+  }
 
    
 }

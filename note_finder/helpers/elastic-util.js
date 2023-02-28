@@ -50,6 +50,11 @@ export async function fetchNotes(searchTerm, fileType) {
         },
       },
     },
+    highlight: {
+      fields: {
+        "text": {}
+      }
+    }
   };
 
   var requestOptions = {

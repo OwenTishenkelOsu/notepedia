@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ReactHtmlParser from 'react-html-parser';
 
 // import router
 import { useRouter } from "next/router";
@@ -123,6 +124,12 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
     marginBottom: "20px",
   };
 
+  const highlightTextStyle = {
+    
+  }
+
+
+
   async function openDocumentHandler(document_id) {
     // the route is note/[note_id]
     // the note_id is the document_id
@@ -203,6 +210,10 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                     {/* cut text snippet off at 500 characters */}
                     <strong>Full Text:</strong>{" "}
                     {result._source.text?.substring(0, Math.min(result._source.text.length, 500)) + "..."}
+                  </div>
+                  <div style={highlightTextStyle}>
+                    <strong>Highlight:</strong>{" "}
+                    {ReactHtmlParser(result.highlight?.text)}
                   </div>
                   <div
                     style={{

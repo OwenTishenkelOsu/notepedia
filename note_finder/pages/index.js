@@ -105,6 +105,8 @@ const SearchPage = () => {
         }
         if (data.hits.hits.length > 0) {
           setSearchResults(data.hits.hits);
+          console.log("DATA:")
+          console.log(data);
         } else {
           setSearchResults([]);
         }

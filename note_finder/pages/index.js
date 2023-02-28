@@ -93,13 +93,15 @@ const SearchPage = () => {
     setFile(e.target.files[0]);
     const reader = new FileReader();
     const selectedFile = e.target.files[0];
-    reader.readAsText(selectedFile); // read the file as text
-    var fileContents;
-    reader.onload = (event) => {
-        fileContents = event.target.result;
-        postNotes(fileContents);
-        console.log("File contents:", fileContents);
-        // do something with the file contents, such as sending them to the server for further processing
+    if(selectedFile != null){
+      reader.readAsText(selectedFile); // read the file as text
+      var fileContents;
+      reader.onload = (event) => {
+          fileContents = event.target.result;
+          postNotes(fileContents);
+          console.log("File contents:", fileContents);
+          // do something with the file contents, such as sending them to the server for further processing
+      }
     }
     
 

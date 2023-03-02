@@ -207,7 +207,10 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                     <strong>File Type:</strong> {result._source.doctype}
                   </div>
                   <div style={highlightTextStyle}>
-                    <strong>Highlight:</strong>{" "}
+                    <strong>
+                    {result.highlight?.text.length || "0"}
+                    {" Occurrence(s): "}
+                    </strong>
                     {/* {ReactHtmlParser(result.highlight?.text)} */}
                     {result.highlight?.text.map((textItem) => {
                       {return ReactHtmlParser(textItem + '... ')}

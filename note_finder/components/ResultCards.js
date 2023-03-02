@@ -201,19 +201,17 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   {/* stylize the output data on cards to make visually appealing */}
                   <div style={titleStyle}>
                     {" "}
-                    <strong>Fragment Title:</strong> {result._source.title}
+                    {result._source.title}
                   </div>
                   <div style={fileTypeStyle}>
                     <strong>File Type:</strong> {result._source.doctype}
                   </div>
-                  <div style={fullTextStyle}>
-                    {/* cut text snippet off at 500 characters */}
-                    <strong>Full Text:</strong>{" "}
-                    {result._source.text?.substring(0, Math.min(result._source.text.length, 500)) + "..."}
-                  </div>
                   <div style={highlightTextStyle}>
                     <strong>Highlight:</strong>{" "}
-                    {ReactHtmlParser(result.highlight?.text)}
+                    {/* {ReactHtmlParser(result.highlight?.text)} */}
+                    {result.highlight?.text.map((textItem) => {
+                      {return ReactHtmlParser(textItem + '... ')}
+                    })} 
                   </div>
                   <div
                     style={{

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ReactHtmlParser from 'react-html-parser';
+import { deleteNote } from "@/helpers/elastic-util";
 
 // import router
 import { useRouter } from "next/router";
@@ -23,6 +24,7 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
       setLoading(false);
     }
   }, [searchResults]);
+
 
   // style for the card
   const cardStyle = {
@@ -102,6 +104,16 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
 
   // style for the download button
   const downloadButtonStyle = {
+    backgroundColor: "#0070f3",
+    border: "1px solid #0070f3",
+    borderRadius: "5px",
+    color: "white",
+    padding: "10px",
+    marginRight: "10px"
+  };
+
+  // style for the download button
+  const deleteButtonStyle = {
     backgroundColor: "#0070f3",
     border: "1px solid #0070f3",
     borderRadius: "5px",
@@ -261,6 +273,20 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                     }}
                   >
                     Download
+                  </button>
+                  <button
+                    style={deleteButtonStyle}
+                    onClick={deleteNote(result._id)}
+                    //need to update search results to remove deleted card
+                    //TODO: call samee search again here
+                    //or delete corresponding serach reuslts index and setloading true
+
+                    //setloading(true)
+                    //cleanedsearchrestults = searchresults.filter(result) => {result._id! = targetID}
+                    //searchresults = cleanedsearchresults (setSearchResults(cleaned))
+                    
+                  >
+                    Delete
                   </button>
                 </div>
               </div>

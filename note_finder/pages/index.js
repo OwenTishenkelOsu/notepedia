@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Form, Input, Select, Button } from "antd";
 import { useRouter } from "next/router";
 const { Option } = Select;
-
 import styles from "../styles/searchPage.module.css";
 import ResultCards from "../components/ResultCards";
 
@@ -24,7 +23,9 @@ const SearchPage = () => {
   const [sortValue, setSortValue] = useState("matchPct");
   const [searchSuggestions, setSearchSuggestions] = useState(null);
   const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
-
+  function docxParser(file){
+   
+  }
   function clearFiles(){
     document.getElementById("input").value = "";
   }
@@ -101,6 +102,7 @@ const SearchPage = () => {
     console.log("fileUploadHandler called");
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
+    docxParser(e.target.files[0]);
     const reader = new FileReader();
     console.log(e.target.files.length);
     for (var i =0;i<e.target.files.length;i++){
@@ -198,6 +200,7 @@ const SearchPage = () => {
     <div className={styles["search-page"]}>
       <h1>Search</h1>
       
+   
       <br></br>
       <Form layout="horizontal">
         <Form.Item>

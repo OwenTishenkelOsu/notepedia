@@ -4,28 +4,55 @@ import { useRouter } from "next/router";
 const { Option } = Select;
 import styles from "../styles/searchPage.module.css";
 import ResultCards from "../components/ResultCards";
+import { parse } from 'himalaya';
+import Docxtemplater from "docxtemplater";
+
+//import fastFile from "fast-file-converter";
 
 // import next link
 import Link from "next/link";
 
 const SearchPage = () => {
-  const [file, setFile] = useState(null);
+    const [file, setFile] = useState(null);
 
     const [error, setError] = useState(null);
     const [submitted, setSubmitted] = useState(false);
 
     const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [fileType, setFileType] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [firstSearch, setFirstSearch] = useState(true);
-  const [searchResults, setSearchResults] = useState([]);
-  const [sortValue, setSortValue] = useState("matchPct");
-  const [searchSuggestions, setSearchSuggestions] = useState(null);
-  const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
-  function docxParser(file){
-   
-  }
+    const [searchTerm, setSearchTerm] = useState("");
+    const [fileType, setFileType] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [firstSearch, setFirstSearch] = useState(true);
+    const [searchResults, setSearchResults] = useState([]);
+    const [sortValue, setSortValue] = useState("matchPct");
+    const [searchSuggestions, setSearchSuggestions] = useState(null);
+    const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
+    //const docx2html=require("docx2html")
+    var mammoth = require("mammoth");
+    const PizZip = require("pizzip");
+    //const fastFile = require("fast-file-converter").default;
+    function docxParser(file) {
+        console.log('file ->', file);
+        var zip = new PizZip(file);
+        var doc = new Docxtemplater().loadZip(zip);
+        var text = doc.getFullText();
+        console.log(text);
+        //var result = mammoth.convertToHtml(file)
+        //    .then(function (result) {
+        //        var html = result.value;    //The generated HTML
+        //        var messages = result.messages; //Any warnings during conversion
+        //        console.log('html within .then ->', html)
+        //        var html = result.value
+        //        console.log('html of docx ->', html)
+        //        var json = parse(html)
+        //        console.log('->', json);
+        //        return json
+        //    })
+        //    .catch(function (error) {
+        //        console.error('ERROR ERROR THERE IS AN ERROR HERE WE HAD AN ERROR')
+        //        console.error(error)
+        //    });
+    }
   function clearFiles(){
     document.getElementById("input").value = "";
   }
@@ -96,31 +123,26 @@ const SearchPage = () => {
   //   }
   //   setSearchResults(temp);
   // }, [sortValue]);
-  const fileUploadHandler = (e) => {
+const fileUploadHandler = (e) => {
     e.preventDefault();
-    if(e.target.files.length!=0){
-    console.log("fileUploadHandler called");
-    console.log(e.target.files[0]);
-    setFile(e.target.files[0]);
-    docxParser(e.target.files[0]);
-    const reader = new FileReader();
-    console.log(e.target.files.length);
-    for (var i =0;i<e.target.files.length;i++){
-    setFile(e.target.files[i]);
-    const reader = new FileReader();
-      const selectedFile = e.target.files[i];
-      reader.readAsText(selectedFile); // read the file as text
-      var fileContents;
-      reader.onload = (event) => {
-          fileContents = event.target.result;
-          postNotes(fileContents);
-          // do something with the file contents, such as sending them to the server for further processing
-      }
+    if (e.target.files.length != 0) {
+        console.log("fileUploadHandler called");
+        console.log(e.target.files[0]);
+        setFile(e.target.files[0]);
+        console.log(e.target.files.length);
+        for (var i = 0; i < e.target.files.length; i++) {
+            setFile(e.target.files[i]);
+            const reader = new FileReader();
+            const selectedFile = e.target.files[i];
+            reader.readAsText(selectedFile); // read the file as text
+            var fileContents;
+            reader.onload = (event) => {
+                fileContents = event.target.result;
+                postNotes(fileContents);
+                // do something with the file contents, such as sending them to the server for further processing
+            }
+        }
     }
-    
-  }
-
-   
 }
   const baseFileTypes= [
     { "fileType": "pdf", "included": true },

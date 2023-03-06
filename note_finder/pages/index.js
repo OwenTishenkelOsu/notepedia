@@ -4,12 +4,7 @@ import { useRouter } from "next/router";
 const { Option } = Select;
 import styles from "../styles/searchPage.module.css";
 import ResultCards from "../components/ResultCards";
-import { parse } from 'himalaya';
-import Docxtemplater from "docxtemplater";
 
-//import fastFile from "fast-file-converter";
-
-// import next link
 import Link from "next/link";
 
 const SearchPage = () => {
@@ -27,31 +22,23 @@ const SearchPage = () => {
     const [sortValue, setSortValue] = useState("matchPct");
     const [searchSuggestions, setSearchSuggestions] = useState(null);
     const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
-    //const docx2html=require("docx2html")
-    var mammoth = require("mammoth");
-    const PizZip = require("pizzip");
-    //const fastFile = require("fast-file-converter").default;
-    function docxParser(file) {
-        console.log('file ->', file);
-        var zip = new PizZip(file);
-        var doc = new Docxtemplater().loadZip(zip);
-        var text = doc.getFullText();
-        console.log(text);
-        //var result = mammoth.convertToHtml(file)
-        //    .then(function (result) {
-        //        var html = result.value;    //The generated HTML
-        //        var messages = result.messages; //Any warnings during conversion
-        //        console.log('html within .then ->', html)
-        //        var html = result.value
-        //        console.log('html of docx ->', html)
-        //        var json = parse(html)
-        //        console.log('->', json);
-        //        return json
-        //    })
-        //    .catch(function (error) {
-        //        console.error('ERROR ERROR THERE IS AN ERROR HERE WE HAD AN ERROR')
-        //        console.error(error)
-        //    });
+
+    /**
+     * @returns {string} of parsed file
+     * */
+    async function docxParser(file) {
+        fetch("http://localhost:8000/test", {
+            method: "POST"
+        },
+        )
+            .then(function (response) {
+                var text = response.text();
+                console.log('response ->', text);
+                return text;
+            }).then(function (text) {
+                console.log('GET Response:', text);
+                return text;
+            });
     }
   function clearFiles(){
     document.getElementById("input").value = "";
@@ -74,76 +61,43 @@ const SearchPage = () => {
   }
   clearFiles();})
   .then(response => console.log(JSON.stringify(response))
-    )
-;
-    
-    
-    
+    );
   }
-  // useEffect(() => {
-  //   console.log(`Sort value changed to ${sortValue}`);
-  //   let temp = [...searchData];
-  //   // if search term is neuroscience, neuro, neuron, etc, include the neuroExamples
-  //   if (searchTerm.toLowerCase().includes("neur")) {
-  //     temp = [...temp, ...neuroExamples];
-  //   }
 
-  //   // if search term is computer science, comp sci, etc, include the compScienceExamples
-  //   if (
-  //     searchTerm.toLowerCase().includes("comp") ||
-  //     searchTerm.toLowerCase().includes("sci")
-  //   ) {
-  //     temp = [...temp, ...compScienceExamples];
-  //   }
-
-  //   if (sortValue === "matchPct") {
-  //     temp.sort((a, b) => b.matchPct - a.matchPct);
-  //   } else if (sortValue === "matchPctInverted") {
-  //     temp.sort((a, b) => a.matchPct - b.matchPct);
-  //   } else if (sortValue === "alphabetical") {
-  //     temp.sort((a, b) => {
-  //       if (a.title < b.title) {
-  //         return -1;
-  //       }
-  //       if (a.title > b.title) {
-  //         return 1;
-  //       }
-  //       return 0;
-  //     });
-  //   } else if (sortValue === "alphabeticalInverted") {
-  //     temp.sort((a, b) => {
-  //       if (a.title < b.title) {
-  //         return 1;
-  //       }
-  //       if (a.title > b.title) {
-  //         return -1;
-  //       }
-  //       return 0;
-  //     });
-  //   }
-  //   setSearchResults(temp);
-  // }, [sortValue]);
 const fileUploadHandler = (e) => {
     e.preventDefault();
     if (e.target.files.length != 0) {
         console.log("fileUploadHandler called");
         console.log(e.target.files[0]);
+        //Parse file to get extension
+
         setFile(e.target.files[0]);
         console.log(e.target.files.length);
+        var fileContents;
         for (var i = 0; i < e.target.files.length; i++) {
-            setFile(e.target.files[i]);
-            const reader = new FileReader();
-            const selectedFile = e.target.files[i];
-            reader.readAsText(selectedFile); // read the file as text
-            var fileContents;
-            reader.onload = (event) => {
-                fileContents = event.target.result;
+            //Check if file is .docx
+            let name = e.target.files[i].name
+            if (name.includes(".docx")) {
+                fileContents = docxParser(e.target.files[i]);
+                console.log('fileContents ->', fileContents);
                 postNotes(fileContents);
-                // do something with the file contents, such as sending them to the server for further processing
+            } else {
+
+                setFile(e.target.files[i]);
+                const reader = new FileReader();
+                const selectedFile = e.target.files[i];
+                reader.readAsText(selectedFile); // read the file as text
+                reader.onload = (event) => {
+                    fileContents = event.target.result;
+                    postNotes(fileContents);
+                    // do something with the file contents, such as sending them to the server for further processing
+                }
             }
         }
+
     }
 }
+
   const baseFileTypes= [
     { "fileType": "pdf", "included": true },
     { "fileType": "doc", "included": true },

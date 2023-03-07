@@ -98,15 +98,18 @@ const SearchPage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.suggest["my-suggest-1"][0]){
+        if (data.suggest != null && data.suggest["my-suggest-1"][0]){
           setSearchSuggestions(data.suggest["my-suggest-1"][0].options);
         } else {
           setSearchSuggestions([]);
         }
-        if (data.hits.hits.length > 0) {
-          setSearchResults(data.hits.hits);
+          if (data.hits != null && data.hits.hits.length > 0) {
+              console.log(typeof (data.hits.hits))
+              const unclean = data.hits.hits;
+              const clean = unclean.filter((hit) => (hit._score > 1));
+              setSearchResults(clean);
         } else {
-          setSearchResults([]);
+            setSearchResults([]);
         }
       });
   };

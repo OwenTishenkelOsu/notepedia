@@ -1,4 +1,3 @@
-import docx2json
 import json
 from datetime import date
 from collections import OrderedDict
@@ -9,7 +8,7 @@ from collections import defaultdict
 
 app = Flask(__name__)
 #Declare that sessions do not have time limits
-app.config["SESSION_PERMANENT"] = True
+app.config["SESSION_PERMANENT"] = False
 #Declare that session is stored on file system
 app.config["SESSION_TYPE"] = "filesystem"
 #A session is a way of storing data btw POST and GET requests
@@ -73,7 +72,6 @@ def handleGetRequest():
     if request.method == 'GET':
         print(f"session SID for GET request is: {session.sid}")
         doc = session.get('doc', None)
-        print(f"DOC IS {doc}")
         if doc:
             return doc
         else:

@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 const { Option } = Select;
 import styles from "../styles/searchPage.module.css";
 import ResultCards from "../components/ResultCards";
-
 import Link from "next/link";
 
 const SearchPage = () => {
@@ -23,23 +22,39 @@ const SearchPage = () => {
     const [searchSuggestions, setSearchSuggestions] = useState(null);
     const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
 
-    /**
-     * @returns {string} of parsed file
-     * */
-    async function docxParser(file) {
-        fetch("http://localhost:8000/test", {
-            method: "POST"
-        },
-        )
-            .then(function (response) {
-                var text = response.text();
-                console.log('response ->', text);
-                return text;
-            }).then(function (text) {
-                console.log('GET Response:', text);
-                return text;
-            });
+    async function sendFile(file) {
+        var formData = new FormData();
+        formData.append("file", file);
+
+        var xhr = new XMLHttpRequest();
+        //send a POST request to the python server
+        xhr.open("POST", "http://localhost:8000/send", true);
+        xhr.withCredentials = true;
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send(formData);
+
     }
+
+    async function docxParser(file) {
+        await sendFile(file);
+        //GET request
+        const output = await fetch("http://localhost:8000/get", {
+            credentials: 'include'
+        })
+            .then((response) => response.text())
+            .then((output) => {
+                console.log('GET Response:', output);
+                return output;
+            });
+
+        return output;
+    }
+
+
   function clearFiles(){
     document.getElementById("input").value = "";
   }
@@ -57,7 +72,7 @@ const SearchPage = () => {
         redirect: "follow",
         body: textBody},
   ).then(response => {if(response.ok){alert(JSON.parse(textBody)["title"] + " Uploaded Successfully");}else{
-    alert(JSON.parse(textBody)["title"] + " Uploaded Unsuccessfully");
+    alert(JSON.parse(textBody)["title"] + " Uploaded Failed");
   }
   clearFiles();})
   .then(response => console.log(JSON.stringify(response))
@@ -74,17 +89,19 @@ const fileUploadHandler = (e) => {
         setFile(e.target.files[0]);
         console.log(e.target.files.length);
         var fileContents;
+        const reader = new FileReader();
         for (var i = 0; i < e.target.files.length; i++) {
             //Check if file is .docx
             let name = e.target.files[i].name
             if (name.includes(".docx")) {
-                fileContents = docxParser(e.target.files[i]);
-                console.log('fileContents ->', fileContents);
-                postNotes(fileContents);
+                var selectedFile = e.target.files[i];
+                docxParser(selectedFile)
+                    .then(function (output) {
+                        console.log("the output is ", output);
+                        postNotes(output);
+                    });
             } else {
-
                 setFile(e.target.files[i]);
-                const reader = new FileReader();
                 const selectedFile = e.target.files[i];
                 reader.readAsText(selectedFile); // read the file as text
                 reader.onload = (event) => {

@@ -1,0 +1,4 @@
+docx==0.2.4
+docx2json==0.0.10
+Flask==2.2.2
+python_docx==0.8.11

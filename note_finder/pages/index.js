@@ -265,6 +265,7 @@ const SearchPage = () => {
                 searchResults={searchResults}
                 setSortValue={setSortValue}
                 sortValue={sortValue}
+                setSearchResults={setSearchResults}
               />
             </div>
           )}

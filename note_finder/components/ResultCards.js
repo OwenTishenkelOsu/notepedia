@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 //   fullText: the full text of the document
 //   matchedPortion: the portion of the document that matched the search term
 //   matchPct: the percentage of the document that matched the search term
-function ResultCards({ searchResults, setSortValue, sortValue }) {
+function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults }) {
   const [loading, setLoading] = useState(true);
 
   // use router to redirect to the open page
@@ -24,6 +24,23 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
       setLoading(false);
     }
   }, [searchResults]);
+
+  function DeleteAndUpdate(id){
+    //need to update search results to remove deleted card
+    //TODO: call samee search again here
+    //or delete corresponding serach reuslts index and setloading true
+
+    //setLoading(true)
+    //cleanedsearchrestults = searchresults.filter(result) => {result._id! = targetID}
+    //searchresults = cleanedsearchresults (setSearchResults(cleaned))
+    setLoading(true);
+    deleteNote(id);
+    var cleanedsearchresults = searchResults.filter(result => result._id != id);
+    console.log(cleanedsearchresults);
+    setSearchResults(cleanedsearchresults); //(setSearchResults(cleaned))
+    setLoading(false);
+    
+  }
 
 
   // style for the card
@@ -276,15 +293,18 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   </button>
                   <button
                     style={deleteButtonStyle}
-                    onClick={deleteNote(result._id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      DeleteAndUpdate(result._id)
+                    }}
                     //need to update search results to remove deleted card
                     //TODO: call samee search again here
                     //or delete corresponding serach reuslts index and setloading true
 
-                    //setloading(true)
+                    //setLoading(true)
                     //cleanedsearchrestults = searchresults.filter(result) => {result._id! = targetID}
                     //searchresults = cleanedsearchresults (setSearchResults(cleaned))
-                    
+
                   >
                     Delete
                   </button>

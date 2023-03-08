@@ -1,0 +1,6 @@
+{
+"title": "The Importance of Defense in Basketball",
+"doctype": "docx",
+"text": "While offense often gets the most attention in basketball, defense is just as important for winning games. Good defensive skills can disrupt the opponent's offense and create scoring opportunities for the defensive team. Defensive skills such as footwork, positioning, and timing can be developed through practice and drills. Additionally, team communication and strategy are important for effective team defense. By emphasizing the importance of defense and practicing defensive skills, players and teams can improve their overall performance on the court.",
+"upload_date": "2023_03_08"
+}

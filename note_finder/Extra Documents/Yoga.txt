@@ -1,0 +1,7 @@
+{
+"title": "The Benefits of Yoga",
+"doctype": "pdf",
+"text": "Yoga is a great way to improve flexibility, strength, and overall physical health. It can also help reduce stress and promote mental clarity and relaxation. There are many different types of yoga, each with its own set of poses and breathing exercises. Some of the most popular types include Hatha, Vinyasa, and Ashtanga yoga. Practicing yoga regularly can have a number of benefits for both the mind and body. It can help improve balance, increase flexibility, build strength, and reduce the risk of injury. Yoga can also help relieve anxiety, depression, and other mental health issues. In addition, it has been shown to improve sleep quality, boost the immune system, and promote overall well-being.",
+"upload_date": "2023_03_07"
+}
+

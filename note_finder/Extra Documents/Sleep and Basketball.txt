@@ -1,0 +1,6 @@
+{
+"title": "The Connection Between Sleep and Weight Loss",
+"doctype": "docx",
+"text": "Getting enough sleep is essential for weight loss. Sleep is important for regulating hormones that control hunger and appetite, such as ghrelin and leptin. Lack of sleep can lead to increased cravings for high-fat and high-carbohydrate foods, as well as decreased energy levels and motivation to exercise. Studies have shown that people who regularly get less than 7 hours of sleep per night are at higher risk for obesity and weight gain. To promote weight loss, it's important to establish healthy sleep habits, such as sticking to a regular sleep schedule, avoiding caffeine and alcohol before bedtime, and creating a comfortable sleep environment.",
+"upload_date": "2023_03_07"
+}

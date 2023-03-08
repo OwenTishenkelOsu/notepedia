@@ -1,0 +1,6 @@
+{
+"title": "The Science of Shooting in Basketball",
+"doctype": "docx",
+"text": "Shooting is one of the most fundamental skills in basketball, and mastering it requires an understanding of the physics behind the shot. Factors such as release angle, release height, and backspin all play a role in determining the trajectory and accuracy of the shot. Additionally, mental factors such as confidence and focus can impact shooting performance. Coaches and players can use drills and techniques to improve shooting skills and optimize shot mechanics. By developing good shooting technique and mental focus, players can become more consistent and effective shooters on the court.",
+"upload_date": "2023_03_08"
+}

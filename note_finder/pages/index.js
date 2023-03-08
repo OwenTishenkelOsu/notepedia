@@ -53,7 +53,21 @@ const SearchPage = () => {
 
         return output;
     }
-
+    function countWords(str) {
+      const wordCounts = new Map()
+      str.split(' ').forEach(word => {
+        const currentWordCount = wordCounts.get(word) || 0
+        wordCounts.set(word, currentWordCount+1)
+      })
+    
+      /* Reproduce your output */
+      const resultWords = [...wordCounts.keys()]
+      const resultCount = [...wordCounts.values()]
+      console.log('resultWords: ' + resultWords);
+      console.log('resultCount: ' + resultCount);
+    
+      return wordCounts
+    }
 
   function clearFiles(){
     document.getElementById("input").value = "";
@@ -101,6 +115,7 @@ const fileUploadHandler = (e) => {
                         postNotes(output);
                     });
             } else {
+                const reader = new FileReader();
                 setFile(e.target.files[i]);
                 const selectedFile = e.target.files[i];
                 reader.readAsText(selectedFile); // read the file as text
@@ -117,7 +132,8 @@ const fileUploadHandler = (e) => {
 
   const baseFileTypes= [
     { "fileType": "pdf", "included": true },
-    { "fileType": "doc", "included": true },
+    { "fileType": "docx", "included": true },
+    { "fileType": "txt", "included": true },
     { "fileType": "ppt", "included": true },
     { "fileType": "xls", "included": true },
   ]
@@ -227,9 +243,10 @@ const fileUploadHandler = (e) => {
             }}
           >
             <Option value="pdf">PDF</Option>
-            <Option value="doc">DOC</Option>
+            <Option value="docx">DOCX</Option>
             <Option value="ppt">PPT</Option>
             <Option value="xls">XLS</Option>
+            <Option value="txt">TXT</Option>
           </Select>
         </Form.Item>
         {searchSuggestions && searchSuggestions.length > 0 && (
@@ -317,11 +334,14 @@ const fileUploadHandler = (e) => {
             <div>Loading...</div>
           ) : (
             <div>
+              
               <ResultCards
                 searchResults={searchResults}
                 setSortValue={setSortValue}
                 sortValue={sortValue}
+                
               />
+               
             </div>
           )}
         </div>

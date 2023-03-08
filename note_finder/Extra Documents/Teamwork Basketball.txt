@@ -1,0 +1,6 @@
+{
+"title": "The Importance of Teamwork in Basketball",
+"doctype": "docx",
+"text": "Basketball is a team sport that requires good communication and teamwork to be successful. Effective teamwork can lead to better ball movement, more scoring opportunities, and better overall team performance. Teamwork skills such as passing, screening, and rebounding can be developed through practice and drills. Additionally, building team cohesion and trust is important for effective teamwork on the court. By emphasizing the importance of teamwork and practicing team-oriented skills, players and teams can improve their performance and achieve success on the court.",
+"upload_date": "2023_03_08"
+}

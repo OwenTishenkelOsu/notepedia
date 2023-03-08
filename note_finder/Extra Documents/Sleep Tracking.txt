@@ -1,0 +1,6 @@
+{
+"title": "The Importance of Sleep Tracking for Athletes",
+"doctype": "docx",
+"text": "Sleep tracking can be a useful tool for athletes who want to optimize their sleep and recovery. By monitoring sleep quality and quantity, athletes can identify patterns and make adjustments to their sleep routines as needed. Sleep tracking can also help athletes identify factors that may be negatively impacting their sleep, such as caffeine consumption or screen time before bed. There are a variety of sleep tracking tools available, including wearable devices and smartphone apps. By using these tools to track their sleep, athletes can optimize their performance and recovery on and off the field.",
+"upload_date": "2023_03_08"
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import {handleSearch} from "../pages/index.js"
 // import router
 import { useRouter } from "next/router";
 
@@ -13,7 +13,6 @@ import { useRouter } from "next/router";
 //   matchPct: the percentage of the document that matched the search term
 function ResultCards({ searchResults, setSortValue, sortValue }) {
   const [loading, setLoading] = useState(true);
-
   // use router to redirect to the open page
   const router = useRouter();
 
@@ -176,13 +175,7 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                 }}
               >
                 <option value="matchPct">Match Percentage (High - Low)</option>
-                <option value="matchPctInverted">
-                  Match Percentage (Low - High)
-                </option>
-                <option value="alphabetical">Alphabetical (A - Z)</option>
-                <option value="alphabeticalInverted">
-                  Alphabetical (Z - A)
-                </option>
+                
               </select>
             </div>
           </div>
@@ -217,6 +210,8 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                     <strong>Match Score:</strong> {result._score}
                   </div>
                 </div>
+               
+                   
                 <div style={buttonStyle}>
                   <button
                     style={openButtonStyle}

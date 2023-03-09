@@ -131,6 +131,7 @@ const fileUploadHandler = (e) => {
     }
 }
 
+
   const baseFileTypes= [
     { "fileType": "pdf", "included": true },
     { "fileType": "docx", "included": true },
@@ -138,6 +139,7 @@ const fileUploadHandler = (e) => {
     { "fileType": "ppt", "included": true },
     { "fileType": "xls", "included": true },
   ]
+
 
   const handleSearch = () => {
     
@@ -162,24 +164,27 @@ const fileUploadHandler = (e) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        searchTerm: searchTerm,
-        fileType: fileType,
+        searchString: searchTerm,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.suggest != null && data.suggest["my-suggest-1"][0]){
+        if (
+          data.suggest &&
+          data.suggest["my-suggest-1"] &&
+          data.suggest["my-suggest-1"][0]
+        ) {
           setSearchSuggestions(data.suggest["my-suggest-1"][0].options);
         } else {
           setSearchSuggestions([]);
         }
-         if (data.hits != null && data.hits.hits.length > 0) {
-           console.log(typeof (data.hits.hits))
-           const unclean = data.hits.hits;
-           const clean = unclean.filter((hit) => (hit._score > 1));
-           setSearchResults(clean);
+        if (data.hits != null && data.hits.hits.length > 0) {
+          console.log(typeof data.hits.hits);
+          const unclean = data.hits.hits;
+          const clean = unclean.filter((hit) => hit._score > 1);
+          setSearchResults(clean);
         } else {
-            setSearchResults([]);
+          setSearchResults([]);
         }
       });
   };
@@ -192,22 +197,21 @@ const fileUploadHandler = (e) => {
   };
 
   useEffect(() => {
-    if (updatingSuggestions){
+    if (updatingSuggestions) {
       handleSearch();
       setUpdatingSuggestions(false);
     }
   }, [searchTerm]);
-  
 
   useEffect(() => {
-      if (firstSearch) {
-        setSortValue("matchPct");
-      }
-      
-      if (searchResults && searchSuggestions) {
-        console.log("searchSuggestions: ", searchSuggestions);
-        setLoading(false);
-      } 
+    if (firstSearch) {
+      setSortValue("matchPct");
+    }
+
+    if (searchResults && searchSuggestions) {
+      console.log("searchSuggestions: ", searchSuggestions);
+      setLoading(false);
+    }
   }, [searchResults]);
 
   return (
@@ -230,21 +234,22 @@ const fileUploadHandler = (e) => {
             mode="multiple"
             placeholder="File type"
             // value is where the "included" property of the fileType object is true
-            value={fileType.filter((fileType) => fileType.included).map((fileType) => fileType.fileType)}
-            onChange={
-              (value) => {
-                console.log("value: ", value);
-                console.log("fileType: ", fileType);
-                var tempFileType = baseFileTypes;
-                tempFileType.forEach((fileType) => {
-                  if (value.includes(fileType.fileType)) {
-                    fileType.included = true;
-                  } else {
-                    fileType.included = false;
-                  }
-                });
-                console.log("tempFileType: ", tempFileType);
-                setFileType(tempFileType);  
+            value={fileType
+              .filter((fileType) => fileType.included)
+              .map((fileType) => fileType.fileType)}
+            onChange={(value) => {
+              console.log("value: ", value);
+              console.log("fileType: ", fileType);
+              var tempFileType = baseFileTypes;
+              tempFileType.forEach((fileType) => {
+                if (value.includes(fileType.fileType)) {
+                  fileType.included = true;
+                } else {
+                  fileType.included = false;
+                }
+              });
+              console.log("tempFileType: ", tempFileType);
+              setFileType(tempFileType);
             }}
           >
             <Option value="pdf">PDF</Option>
@@ -255,54 +260,65 @@ const fileUploadHandler = (e) => {
           </Select>
         </Form.Item>
         {searchSuggestions && searchSuggestions.length > 0 && (
-            <div>
-              <p>Try instead: </p>
-              {searchSuggestions.map((suggestion, index) => (
-                <div key={index} style={{
+          <div>
+            <p>Try instead: </p>
+            {searchSuggestions.map((suggestion, index) => (
+              <div
+                key={index}
+                style={{
                   // make these appear on the same line
                   display: "inline-block",
                   marginRight: "10px",
                   // add a little space between the suggestions
                   marginBottom: "10px",
-                }}>
-                  <Button
-                    onClick={() => {
-                      setUpdatingSuggestions(true);
-                      setSearchTerm(suggestion.text);
-                    }}
-                    style={{
-                      // make the buttons appear like links
-                      padding: 0,
-                      border: "none",
-                      background: "none",
-                      color: "blue",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {suggestion.text}
-                  </Button>
-                  
-                </div>
-              ))}
-            </div>
+
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    setUpdatingSuggestions(true);
+                    setSearchTerm(suggestion.text);
+                  }}
+                  style={{
+                    // make the buttons appear like links
+                    padding: 0,
+                    border: "none",
+                    background: "none",
+                    color: "blue",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  {suggestion.text}
+                </Button>
+              </div>
+            ))}
+          </div>
+
         )}
-        <div style={{
-          // make these appear on the same line
-          display: "flex",
-          alignItems: "center",
-        }}>
-          <Form.Item style={{
-            // add padding to the right of the search button
-            marginRight: "10px",
-          }}>
-            <Button type="primary" onClick={() => {
-              if (searchTerm !== "") {
-                handleSearch();
-              } else {
-                alert("Please enter a search term.");
-              }
-            }}>
+        <div
+          style={{
+            // make these appear on the same line
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Form.Item
+            style={{
+              // add padding to the right of the search button
+              marginRight: "10px",
+            }}
+          >
+            <Button
+              type="primary"
+              onClick={() => {
+                if (searchTerm !== "") {
+                  handleSearch();
+                } else {
+                  alert("Please enter a search term.");
+                }
+              }}
+            >
               Search
             </Button>
             <input type="file" onChange = {fileUploadHandler}id="input" multiple />
@@ -328,7 +344,6 @@ const fileUploadHandler = (e) => {
               {searchResults.length} results found for "{searchTerm}".
             </p>
           )}
-
         </div>
       </Form>
       {firstSearch ? (

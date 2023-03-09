@@ -22,6 +22,7 @@ def doc2json(doc):
     #the 'default' value or value that is returned
     #if there is no key is defined in the constructor
     #as a method
+    print(doc)
     doc_json = defaultdict(lambda: "No value was entered")
 
     #Define key order

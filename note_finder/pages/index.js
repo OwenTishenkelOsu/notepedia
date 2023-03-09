@@ -21,7 +21,7 @@ const SearchPage = () => {
     const [sortValue, setSortValue] = useState("matchPct");
     const [searchSuggestions, setSearchSuggestions] = useState(null);
     const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
-
+   
     async function sendFile(file) {
         var formData = new FormData();
         formData.append("file", file);
@@ -65,13 +65,14 @@ const SearchPage = () => {
       const resultCount = [...wordCounts.values()]
       console.log('resultWords: ' + resultWords);
       console.log('resultCount: ' + resultCount);
-    
+      
       return wordCounts
     }
 
   function clearFiles(){
     document.getElementById("input").value = "";
   }
+  
   async function postNotes(textBody) {
 
     var myHeaders = new Headers();
@@ -139,6 +140,7 @@ const fileUploadHandler = (e) => {
   ]
 
   const handleSearch = () => {
+    
     setLoading(true);
     if (firstSearch) {
       setFirstSearch(false);
@@ -178,7 +180,7 @@ const fileUploadHandler = (e) => {
         }
       });
   };
-
+  
   const resetSearchHandler = (e) => {
     e.preventDefault();
     setSearchTerm("");
@@ -291,7 +293,7 @@ const fileUploadHandler = (e) => {
             // add padding to the right of the search button
             marginRight: "10px",
           }}>
-            <Button type="primary" onClick={() => {
+            <Button id = "search" type="primary" onClick={() => {
               if (searchTerm !== "") {
                 handleSearch();
               } else {
@@ -339,6 +341,7 @@ const fileUploadHandler = (e) => {
                 searchResults={searchResults}
                 setSortValue={setSortValue}
                 sortValue={sortValue}
+                
                 
               />
                

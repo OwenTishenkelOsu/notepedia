@@ -3,6 +3,7 @@ import {handleSearch} from "../pages/index.js"
 // import router
 import { useRouter } from "next/router";
 
+
 // React functional component for the search page, to be used to display the search results
 // take as input an array of objects, each object representing a search result
 // each object will have the following properties:
@@ -131,7 +132,7 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
       query: { note_id: document_id },
     });
   }
-
+  
   // return loading if the search results are still loading
   return (
     <>
@@ -211,8 +212,9 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   </div>
                 </div>
                
-                   
+                 <button  id = "newSearch" onClick = {(e) => {e.preventDefault();document.getElementById("search").click()}}>Search for <span id="searchTerm">this</span></button>  
                 <div style={buttonStyle}>
+                  
                   <button
                     style={openButtonStyle}
                     onClick={(e) => {

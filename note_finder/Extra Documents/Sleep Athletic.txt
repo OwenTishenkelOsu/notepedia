@@ -1,0 +1,6 @@
+{
+"title": "The Connection Between Sleep and Athletic Performance",
+"doctype": "docx",
+"text": "Sleep is a critical component of athletic performance, as it plays a key role in the body's recovery and repair processes. Athletes who get enough high-quality sleep are more likely to have better endurance, reaction time, and overall physical performance. Lack of sleep, on the other hand, can lead to fatigue, decreased reaction time, and increased risk of injury. To optimize athletic performance, athletes should aim to get at least 7-9 hours of sleep per night, establish a consistent sleep schedule, and create a comfortable sleep environment.",
+"upload_date": "2023_03_08"
+}

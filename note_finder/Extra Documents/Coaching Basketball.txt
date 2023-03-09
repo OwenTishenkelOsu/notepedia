@@ -1,0 +1,6 @@
+{
+"title": "The Role of Coaching in Basketball",
+"doctype": "docx",
+"text": "Coaching plays a critical role in the success of a basketball team. A good coach can provide guidance, motivation, and strategic direction for the team, as well as help players develop their individual skills. Coaching skills such as communication, leadership, and strategic planning can be developed through education and experience. Additionally, coaches can use data and technology to analyze team and player performance and identify areas for improvement. By emphasizing the importance of coaching and developing coaching skills, coaches can help their teams achieve success on the court.",
+"upload_date": "2023_03_08"
+}

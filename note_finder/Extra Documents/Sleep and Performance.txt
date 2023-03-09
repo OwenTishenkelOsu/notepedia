@@ -1,0 +1,6 @@
+{
+"title": "The Effects of Sleep on Athletic Performance",
+"doctype": "docx",
+"text": "Getting enough sleep is essential for athletic performance. Sleep is important for muscle recovery, hormone regulation, and energy restoration. Athletes who regularly get less than 7 hours of sleep per night are at risk for decreased performance, decreased endurance, and increased risk of injury. Studies have shown that athletes who get adequate sleep have better reaction times, improved cognitive functioning, and increased accuracy. To improve athletic performance, it's important to establish healthy sleep habits, such as sticking to a regular sleep schedule, avoiding caffeine and alcohol before bedtime, and creating a comfortable sleep environment.",
+"upload_date": "2023_03_07"
+}

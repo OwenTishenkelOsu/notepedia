@@ -1,0 +1,6 @@
+{
+"title": "The Role of Sleep in Injury Prevention for Athletes",
+"doctype": "docx",
+"text": "Getting enough high-quality sleep is an important factor in preventing injuries for athletes. Sleep plays a critical role in the body's recovery and repair processes, helping to restore muscle tissue and reduce inflammation. Additionally, lack of sleep can lead to fatigue, decreased reaction time, and decreased cognitive function, which can increase the risk of accidents and injuries. To reduce the risk of injury, athletes should prioritize sleep by getting at least 7-9 hours per night, creating a comfortable sleep environment, and avoiding habits that disrupt sleep, such as caffeine and alcohol consumption before bedtime.",
+"upload_date": "2023_03_08"
+}

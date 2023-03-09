@@ -1,0 +1,6 @@
+{
+"title": "Sleep and Aging: Why Sleep is Important for Seniors",
+"doctype": "docx",
+"text": "Getting enough sleep is important for seniors. Sleep is essential for regulating hormones, promoting memory consolidation, and improving overall health. Seniors who regularly get less than 7 hours of sleep per night are at higher risk for cognitive decline, memory problems, and depression. Poor sleep quality can also contribute to an increased risk of falls and other accidents. To promote healthy aging, it's important to establish healthy sleep habits, such as sticking to a regular sleep schedule, avoiding caffeine and alcohol before bedtime, and creating a comfortable sleep environment.",
+"upload_date": "2023_03_07"
+}

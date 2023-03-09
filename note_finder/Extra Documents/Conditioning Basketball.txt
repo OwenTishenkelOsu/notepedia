@@ -1,0 +1,6 @@
+{
+"title": "The Role of Conditioning in Basketball",
+"doctype": "docx",
+"text": "Basketball is a physically demanding sport that requires a high level of conditioning. Good conditioning can improve endurance, strength, and overall physical fitness, allowing players to perform at a higher level for longer periods of time. Conditioning drills such as sprints, agility drills, and weight training can be used to improve specific aspects of physical fitness. Additionally, proper nutrition and rest are important for maintaining good physical health and preventing injuries. By prioritizing conditioning and maintaining good physical health, players can improve their performance and reduce their risk of injury on the court.",
+"upload_date": "2023_03_08"
+}

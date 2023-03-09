@@ -2,8 +2,6 @@ import { raw } from "file-loader";
 
 // function to fetch data from ElasticSearch
 
-
-
 export async function postNotes(body, fileType) {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
@@ -16,15 +14,10 @@ export async function postNotes(body, fileType) {
     redirect: "follow",
     body: body,
   };
-  const response = await fetch(
-    "http://localhost:9200/notes",
-    requestOptions
-  );
-  
+  const response = await fetch("http://localhost:9200/notes", requestOptions);
 }
 
 export async function fetchNotes(searchString) {
-
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // allow from localhost
@@ -251,9 +244,9 @@ export async function fetchNotes(searchString) {
     },
     highlight: {
       fields: {
-        "text": {}
-      }
-    }
+        text: {},
+      },
+    },
   };
 
   // Add the file type query (if specified)
@@ -473,7 +466,7 @@ export async function getElasticNoteById(note_id) {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
-    keepalive: "true"
+    keepalive: "true",
   };
 
   var url = "http://localhost:9200/notes/_doc/" + note_id;
@@ -481,4 +474,24 @@ export async function getElasticNoteById(note_id) {
   const response = await fetch(url, requestOptions);
   const result = await response.json();
   return result;
+}
+
+export async function getAllElasticNotes() {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
+  myHeaders.append("Content-Type", "application/json");
+
+  var raw = JSON.stringify({});
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  fetch("http://www.localhost:9200/notes/_search", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
 }

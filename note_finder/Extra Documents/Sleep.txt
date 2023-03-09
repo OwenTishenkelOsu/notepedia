@@ -1,0 +1,6 @@
+{
+"title": "The Science of Sleep",
+"doctype": "docx",
+"text": "Sleep is essential for good health and well-being. It is a complex process that involves a number of physiological and neurological mechanisms. The recommended amount of sleep varies depending on age, with adults typically needing 7-9 hours per night. Lack of sleep can have a number of negative effects on the body and mind, including decreased cognitive function, impaired immune function, and increased risk of accidents and injuries. Chronic sleep deprivation has been linked to a variety of health problems, including obesity, diabetes, and cardiovascular disease. To promote healthy sleep habits, it's important to establish a regular sleep schedule, avoid caffeine and alcohol before bedtime, and create a comfortable sleep environment.",
+"upload_date": "2023_02_23"
+}

@@ -1,0 +1,6 @@
+{
+"title": "The Importance of Proper Nutrition",
+"doctype": "pdf",
+"text": "Proper nutrition is essential for maintaining good health and preventing chronic diseases. A balanced diet that includes a variety of fruits, vegetables, whole grains, lean proteins, and healthy fats can help support overall well-being. In contrast, a diet that is high in processed foods, sugar, and unhealthy fats can increase the risk of obesity, heart disease, and other health problems. It's important to pay attention to portion sizes and limit the intake of foods that are high in calories, sodium, and added sugars. In addition, staying hydrated by drinking plenty of water is crucial for good health. Making small changes to your diet and lifestyle can have a big impact on your health in the long run.",
+"upload_date": "2023_02_25"
+}

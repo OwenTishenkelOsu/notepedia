@@ -1,7 +1,30 @@
 import { raw } from "file-loader";
 
 // function to fetch data from ElasticSearch
+
 export async function fetchNotes(searchString) {
+
+export async function postNotes(body, fileType) {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
+  // allow from localhost
+  myHeaders.append("Access-Control-Allow-Origin", "http://localhost:3000");
+  myHeaders.append("Content-Type", "application/json");
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    redirect: "follow",
+    body: body,
+  };
+  const response = await fetch(
+    "http://localhost:9200/notes",
+    requestOptions
+  );
+  
+}
+
+export async function fetchNotes(searchString) {
+
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // allow from localhost

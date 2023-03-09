@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'html-react-parser';
 import { deleteNote } from "@/helpers/elastic-util";
 
 // import router
 import { useRouter } from "next/router";
+
 
 // React functional component for the search page, to be used to display the search results
 // take as input an array of objects, each object representing a search result
@@ -15,7 +16,6 @@ import { useRouter } from "next/router";
 //   matchPct: the percentage of the document that matched the search term
 function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults }) {
   const [loading, setLoading] = useState(true);
-
   // use router to redirect to the open page
   const router = useRouter();
 
@@ -168,7 +168,7 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
       query: { note_id: document_id },
     });
   }
-
+  
   // return loading if the search results are still loading
   return (
     <>
@@ -212,13 +212,7 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
                 }}
               >
                 <option value="matchPct">Match Percentage (High - Low)</option>
-                <option value="matchPctInverted">
-                  Match Percentage (Low - High)
-                </option>
-                <option value="alphabetical">Alphabetical (A - Z)</option>
-                <option value="alphabeticalInverted">
-                  Alphabetical (Z - A)
-                </option>
+                
               </select>
             </div>
           </div>
@@ -258,7 +252,10 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
                     <strong>Match Score:</strong> {result._score}
                   </div>
                 </div>
+               
+                 
                 <div style={buttonStyle}>
+                  
                   <button
                     style={openButtonStyle}
                     onClick={(e) => {

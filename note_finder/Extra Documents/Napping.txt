@@ -1,0 +1,6 @@
+{
+"title": "The Benefits of Napping for Athletes",
+"doctype": "docx",
+"text": "Napping can be a useful tool for athletes who need to recover and recharge between training sessions or competitions. A well-timed nap can improve alertness, cognitive function, and overall performance. Napping can also help alleviate the negative effects of sleep deprivation, such as fatigue and decreased reaction time. However, napping should be done strategically, with consideration given to factors such as timing, duration, and sleep quality. By incorporating naps into their training and recovery routines, athletes can optimize their performance and reduce the risk of injury.",
+"upload_date": "2023_03_08"
+}

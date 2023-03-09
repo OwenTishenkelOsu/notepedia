@@ -1,0 +1,6 @@
+{
+"title": "The Impact of Travel on Athletic Performance and Sleep",
+"doctype": "docx",
+"text": "Travel can have a significant impact on athletic performance and sleep quality, particularly for athletes who travel frequently or across time zones. Jet lag, changes in sleep environment, and disruptions to sleep schedules can all negatively affect performance and recovery. To mitigate the effects of travel, athletes can prepare ahead of time by adjusting their sleep schedules and routines, staying hydrated, and creating a comfortable sleep environment. Additionally, athletes can use techniques such as light therapy and melatonin supplementation to help regulate their sleep patterns while traveling.",
+"upload_date": "2023_03_08"
+}

@@ -86,8 +86,8 @@ const SearchPage = () => {
         headers: myHeaders,
         redirect: "follow",
         body: textBody},
-  ).then(response => {if(response.ok){alert(JSON.parse(textBody)["title"] + " Uploaded Successfully");}else{
-    alert(JSON.parse(textBody)["title"] + " Uploaded Failed");
+  ).then(response => {if(response.ok){alert(textBody["title"] + " Uploaded Successfully");}else{
+    alert(textBody["title"] + " Upload Failed");
   }
   clearFiles();})
   .then(response => console.log(JSON.stringify(response))
@@ -115,14 +115,30 @@ const fileUploadHandler = (e) => {
                         console.log("the output is ", output);
                         postNotes(output);
                     });
-            } else {
+            } else if (name.includes(".txt")) {
                 const reader = new FileReader();
                 setFile(e.target.files[i]);
+                console.log(e.target.files[i]);
                 const selectedFile = e.target.files[i];
+                const name = selectedFile.name;
+                const date = selectedFile.lastModifiedDate;
+                const type = "txt"
                 reader.readAsText(selectedFile); // read the file as text
                 reader.onload = (event) => {
                     fileContents = event.target.result;
-                    postNotes(fileContents);
+                    console.log(event.target);
+                    const date = new Date();
+                    const finalDate = date.getFullYear() + "_" + date.getMonth() + "_" + date.getDay();
+                    
+                    const jsonUpload = {
+                          "title": name,
+                          "doctype": type,
+                          "text": event.target.result,
+                          "upload_date": finalDate
+                    }
+                    console.log(fileContents)
+                    console.log(jsonUpload);
+                    postNotes(jsonUpload);
                     // do something with the file contents, such as sending them to the server for further processing
                 }
             }

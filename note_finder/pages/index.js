@@ -7,142 +7,69 @@ import ResultCards from "../components/ResultCards";
 import Link from "next/link";
 
 const SearchPage = () => {
-    const [file, setFile] = useState(null);
+  const [file, setFile] = useState(null);
 
-    const [error, setError] = useState(null);
-    const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
 
-    const router = useRouter();
-    const [searchTerm, setSearchTerm] = useState("");
-    const [fileType, setFileType] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [firstSearch, setFirstSearch] = useState(true);
-    const [searchResults, setSearchResults] = useState([]);
-    const [sortValue, setSortValue] = useState("matchPct");
-    const [searchSuggestions, setSearchSuggestions] = useState(null);
-    const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
-   
-    async function sendFile(file) {
-        var formData = new FormData();
-        formData.append("file", file);
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [fileType, setFileType] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [firstSearch, setFirstSearch] = useState(true);
+  const [searchResults, setSearchResults] = useState([]);
+  const [sortValue, setSortValue] = useState("matchPct");
+  const [searchSuggestions, setSearchSuggestions] = useState(null);
+  const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
 
-        var xhr = new XMLHttpRequest();
-        //send a POST request to the python server
-        xhr.open("POST", "http://localhost:8000/send", true);
-        xhr.withCredentials = true;
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log(xhr.responseText);
-            }
-        };
-        xhr.send(formData);
+  //
 
-    }
+  // const fileUploadHandler = (e) => {
+  //     e.preventDefault();
+  //     if (e.target.files.length != 0) {
+  //         console.log("fileUploadHandler called");
+  //         console.log(e.target.files[0]);
+  //         //Parse file to get extension
 
-    async function docxParser(file) {
-        await sendFile(file);
-        //GET request
-        const output = await fetch("http://localhost:8000/get", {
-            credentials: 'include'
-        })
-            .then((response) => response.text())
-            .then((output) => {
-                console.log('GET Response:', output);
-                return output;
-            });
+  //         setFile(e.target.files[0]);
+  //         console.log(e.target.files.length);
+  //         var fileContents;
+  //         const reader = new FileReader();
+  //         for (var i = 0; i < e.target.files.length; i++) {
+  //             //Check if file is .docx
+  //             let name = e.target.files[i].name
+  //             if (name.includes(".docx")) {
+  //                 var selectedFile = e.target.files[i];
+  //                 docxParser(selectedFile)
+  //                     .then(function (output) {
+  //                         console.log("the output is ", output);
+  //                         postNotes(output);
+  //                     });
+  //             } else {
+  //                 const reader = new FileReader();
+  //                 setFile(e.target.files[i]);
+  //                 const selectedFile = e.target.files[i];
+  //                 reader.readAsText(selectedFile); // read the file as text
+  //                 reader.onload = (event) => {
+  //                     fileContents = event.target.result;
+  //                     postNotes(fileContents);
+  //                     // do something with the file contents, such as sending them to the server for further processing
+  //                 }
+  //             }
+  //         }
 
-        return output;
-    }
-    /*function countWords(str) {
-      const wordCounts = new Map()
-      str.split(' ').forEach(word => {
-        const currentWordCount = wordCounts.get(word) || 0
-        wordCounts.set(word, currentWordCount+1)
-      })
-    
-      
-      const resultWords = [...wordCounts.keys()]
-      const resultCount = [...wordCounts.values()]
-      console.log('resultWords: ' + resultWords);
-      console.log('resultCount: ' + resultCount);
-      
-      return wordCounts
-    }
-*/
-  function clearFiles(){
-    document.getElementById("input").value = "";
-  }
-  
-  async function postNotes(textBody) {
+  //     }
+  // }
 
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
-    // allow from localhost
-    myHeaders.append("Content-Type", "application/json");
-    
-    fetch(
-      "http://localhost:9200/notes/_doc",{
-        method: "POST",
-        headers: myHeaders,
-        redirect: "follow",
-        body: textBody},
-  ).then(response => {if(response.ok){alert(JSON.parse(textBody)["title"] + " Uploaded Successfully");}else{
-    alert(JSON.parse(textBody)["title"] + " Uploaded Failed");
-  }
-  clearFiles();})
-  .then(response => console.log(JSON.stringify(response))
-    );
-  }
-
-const fileUploadHandler = (e) => {
-    e.preventDefault();
-    if (e.target.files.length != 0) {
-        console.log("fileUploadHandler called");
-        console.log(e.target.files[0]);
-        //Parse file to get extension
-
-        setFile(e.target.files[0]);
-        console.log(e.target.files.length);
-        var fileContents;
-        const reader = new FileReader();
-        for (var i = 0; i < e.target.files.length; i++) {
-            //Check if file is .docx
-            let name = e.target.files[i].name
-            if (name.includes(".docx")) {
-                var selectedFile = e.target.files[i];
-                docxParser(selectedFile)
-                    .then(function (output) {
-                        console.log("the output is ", output);
-                        postNotes(output);
-                    });
-            } else {
-                const reader = new FileReader();
-                setFile(e.target.files[i]);
-                const selectedFile = e.target.files[i];
-                reader.readAsText(selectedFile); // read the file as text
-                reader.onload = (event) => {
-                    fileContents = event.target.result;
-                    postNotes(fileContents);
-                    // do something with the file contents, such as sending them to the server for further processing
-                }
-            }
-        }
-
-    }
-}
-
-
-  const baseFileTypes= [
-    { "fileType": "pdf", "included": true },
-    { "fileType": "docx", "included": true },
-    { "fileType": "txt", "included": true },
-    { "fileType": "ppt", "included": true },
-    { "fileType": "xls", "included": true },
-  ]
-
+  const baseFileTypes = [
+    { fileType: "pdf", included: true },
+    { fileType: "docx", included: true },
+    { fileType: "txt", included: true },
+    { fileType: "ppt", included: true },
+    { fileType: "xls", included: true },
+  ];
 
   const handleSearch = () => {
-    
     setLoading(true);
     if (firstSearch) {
       setFirstSearch(false);
@@ -188,7 +115,7 @@ const fileUploadHandler = (e) => {
         }
       });
   };
-  
+
   const resetSearchHandler = (e) => {
     e.preventDefault();
     setSearchTerm("");
@@ -217,8 +144,7 @@ const fileUploadHandler = (e) => {
   return (
     <div className={styles["search-page"]}>
       <h1>Search</h1>
-      
-   
+
       <br></br>
       <Form layout="horizontal">
         <Form.Item>
@@ -271,7 +197,6 @@ const fileUploadHandler = (e) => {
                   marginRight: "10px",
                   // add a little space between the suggestions
                   marginBottom: "10px",
-
                 }}
               >
                 <Button
@@ -294,7 +219,6 @@ const fileUploadHandler = (e) => {
               </div>
             ))}
           </div>
-
         )}
         <div
           style={{
@@ -321,8 +245,12 @@ const fileUploadHandler = (e) => {
             >
               Search
             </Button>
-            <input type="file" onChange = {fileUploadHandler}id="input" multiple />
-            
+            {/* <input
+              type="file"
+              onChange={fileUploadHandler}
+              id="input"
+              multiple
+            /> */}
           </Form.Item>
           {/* reset filters button if not on first search */}
           {!firstSearch && (
@@ -354,14 +282,12 @@ const fileUploadHandler = (e) => {
             <div>Loading...</div>
           ) : (
             <div>
-              
               <ResultCards
                 searchResults={searchResults}
                 setSortValue={setSortValue}
                 sortValue={sortValue}
                 setSearchResults={setSearchResults}
               />
-               
             </div>
           )}
         </div>

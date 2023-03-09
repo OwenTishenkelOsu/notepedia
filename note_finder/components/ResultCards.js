@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'html-react-parser';
 import { deleteNote } from "@/helpers/elastic-util";
 
 // import router

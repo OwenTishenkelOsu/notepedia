@@ -2,7 +2,7 @@ import { raw } from "file-loader";
 
 // function to fetch data from ElasticSearch
 
-export async function fetchNotes(searchString) {
+
 
 export async function postNotes(body, fileType) {
   var myHeaders = new Headers();

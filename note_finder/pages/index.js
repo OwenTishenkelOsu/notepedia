@@ -53,14 +53,14 @@ const SearchPage = () => {
 
         return output;
     }
-    function countWords(str) {
+    /*function countWords(str) {
       const wordCounts = new Map()
       str.split(' ').forEach(word => {
         const currentWordCount = wordCounts.get(word) || 0
         wordCounts.set(word, currentWordCount+1)
       })
     
-      /* Reproduce your output */
+      
       const resultWords = [...wordCounts.keys()]
       const resultCount = [...wordCounts.values()]
       console.log('resultWords: ' + resultWords);
@@ -68,7 +68,7 @@ const SearchPage = () => {
       
       return wordCounts
     }
-
+*/
   function clearFiles(){
     document.getElementById("input").value = "";
   }
@@ -293,7 +293,7 @@ const fileUploadHandler = (e) => {
             // add padding to the right of the search button
             marginRight: "10px",
           }}>
-            <Button id = "search" type="primary" onClick={() => {
+            <Button type="primary" onClick={() => {
               if (searchTerm !== "") {
                 handleSearch();
               } else {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {handleSearch} from "../pages/index.js"
+
 // import router
 import { useRouter } from "next/router";
 
@@ -212,7 +212,7 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   </div>
                 </div>
                
-                 <button  id = "newSearch" onClick = {(e) => {e.preventDefault();document.getElementById("search").click()}}>Search for <span id="searchTerm">this</span></button>  
+                 
                 <div style={buttonStyle}>
                   
                   <button

@@ -106,8 +106,11 @@ const SearchPage = () => {
         } else {
           setSearchSuggestions([]);
         }
-        if (data.hits.hits.length > 0) {
-          setSearchResults(data.hits.hits);
+        if (data.hits != null && data.hits.hits.length > 0) {
+          console.log(typeof data.hits.hits);
+          const unclean = data.hits.hits;
+          const clean = unclean.filter((hit) => hit._score > 1);
+          setSearchResults(clean);
         } else {
           setSearchResults([]);
         }
@@ -275,6 +278,7 @@ const SearchPage = () => {
                 searchResults={searchResults}
                 setSortValue={setSortValue}
                 sortValue={sortValue}
+                setSearchResults={setSearchResults}
               />
             </div>
           )}

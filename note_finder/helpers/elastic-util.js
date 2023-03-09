@@ -226,6 +226,11 @@ export async function fetchNotes(searchString) {
         must: [],
       },
     },
+    highlight: {
+      fields: {
+        "text": {}
+      }
+    }
   };
 
   // Add the file type query (if specified)
@@ -406,7 +411,7 @@ export async function deleteNote(note_id) {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // allow from localhost
-  myHeaders.append("Access-Control-Allow-Origin", "http://localhost:3000");
+  //myHeaders.append("Access-Control-Allow-Origin", "http://localhost:3000");
   myHeaders.append("Content-Type", "application/json");
 
   var requestOptions = {
@@ -415,8 +420,8 @@ export async function deleteNote(note_id) {
     redirect: "follow",
   };
 
-  var url = "http://localhost:9200/notes/_doc/" + note_id + "?refresh=true";
-
+  var url = "http://localhost:9200/notes/_doc/" + note_id; //+ "?refresh=true";
+  console.log(url);
   const response = await fetch(url, requestOptions);
   const result = await response.json();
   return result;
@@ -445,6 +450,7 @@ export async function getElasticNoteById(note_id) {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
+    keepalive: "true"
   };
 
   var url = "http://localhost:9200/notes/_doc/" + note_id;

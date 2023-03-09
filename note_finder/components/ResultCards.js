@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import ReactHtmlParser from 'react-html-parser';
+import { deleteNote } from "@/helpers/elastic-util";
 
 // import router
 import { useRouter } from "next/router";
@@ -12,7 +14,7 @@ import { useRouter } from "next/router";
 //   fullText: the full text of the document
 //   matchedPortion: the portion of the document that matched the search term
 //   matchPct: the percentage of the document that matched the search term
-function ResultCards({ searchResults, setSortValue, sortValue }) {
+function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults }) {
   const [loading, setLoading] = useState(true);
   // use router to redirect to the open page
   const router = useRouter();
@@ -22,6 +24,24 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
       setLoading(false);
     }
   }, [searchResults]);
+
+  function DeleteAndUpdate(id){
+    //need to update search results to remove deleted card
+    //TODO: call samee search again here
+    //or delete corresponding serach reuslts index and setloading true
+
+    //setLoading(true)
+    //cleanedsearchrestults = searchresults.filter(result) => {result._id! = targetID}
+    //searchresults = cleanedsearchresults (setSearchResults(cleaned))
+    setLoading(true);
+    deleteNote(id);
+    var cleanedsearchresults = searchResults.filter(result => result._id != id);
+    console.log(cleanedsearchresults);
+    setSearchResults(cleanedsearchresults); //(setSearchResults(cleaned))
+    setLoading(false);
+    
+  }
+
 
   // style for the card
   const cardStyle = {
@@ -106,6 +126,16 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
     borderRadius: "5px",
     color: "white",
     padding: "10px",
+    marginRight: "10px"
+  };
+
+  // style for the download button
+  const deleteButtonStyle = {
+    backgroundColor: "#0070f3",
+    border: "1px solid #0070f3",
+    borderRadius: "5px",
+    color: "white",
+    padding: "10px",
   };
 
   // style for the pdf, ppt, doc preview
@@ -122,6 +152,12 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
     alignItems: "flex-start",
     marginBottom: "20px",
   };
+
+  const highlightTextStyle = {
+    
+  }
+
+
 
   async function openDocumentHandler(document_id) {
     // the route is note/[note_id]
@@ -188,15 +224,20 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                   {/* stylize the output data on cards to make visually appealing */}
                   <div style={titleStyle}>
                     {" "}
-                    <strong>Fragment Title:</strong> {result._source.title}
+                    {result._source.title}
                   </div>
                   <div style={fileTypeStyle}>
                     <strong>File Type:</strong> {result._source.doctype}
                   </div>
-                  <div style={fullTextStyle}>
-                    {/* cut text snippet off at 500 characters */}
-                    <strong>Full Text:</strong>{" "}
-                    {result._source.text.substring(0, 500) + "..."}
+                  <div style={highlightTextStyle}>
+                    <strong>
+                    {result.highlight?.text.length || "0"}
+                    {" Occurrence(s): "}
+                    </strong>
+                    {/* {ReactHtmlParser(result.highlight?.text)} */}
+                    {result.highlight?.text.map((textItem) => {
+                      {return ReactHtmlParser(textItem + '... ')}
+                    })} 
                   </div>
                   <div
                     style={{
@@ -246,6 +287,23 @@ function ResultCards({ searchResults, setSortValue, sortValue }) {
                     }}
                   >
                     Download
+                  </button>
+                  <button
+                    style={deleteButtonStyle}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      DeleteAndUpdate(result._id)
+                    }}
+                    //need to update search results to remove deleted card
+                    //TODO: call samee search again here
+                    //or delete corresponding serach reuslts index and setloading true
+
+                    //setLoading(true)
+                    //cleanedsearchrestults = searchresults.filter(result) => {result._id! = targetID}
+                    //searchresults = cleanedsearchresults (setSearchResults(cleaned))
+
+                  >
+                    Delete
                   </button>
                 </div>
               </div>

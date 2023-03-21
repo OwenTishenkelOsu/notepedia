@@ -17,7 +17,7 @@ export async function postNotes(body, fileType) {
   const response = await fetch("http://localhost:9200/notes", requestOptions);
 }
 
-export async function fetchNotes(searchString) {
+export async function fetchNotes(searchString, fileType) {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // allow from localhost
@@ -159,7 +159,7 @@ export async function fetchNotes(searchString) {
   // // Add the bool query to the main query object
   // query.query.bool.must.push(boolQuery);
 
-  // // Add the file type query (if specified)
+  // Add the file type query (if specified)
   // if (fileType) {
   //   query.query.bool.must.push({
   //     match: {
@@ -171,7 +171,6 @@ export async function fetchNotes(searchString) {
   // User input values
   var searchQuery = searchString;
   console.log("searchQuery: ", searchQuery);
-  const fileType = "pdf";
 
   // parse the search query which will be a string of comma separated values in quotes ie. ""hello world", "world", "hello""
   // the spaces between the commas will be removed and the string will be split into an array
@@ -393,9 +392,9 @@ export async function fetchNotes(searchString) {
   // // Add the bool query to the main query object
   // query.query.bool.must.push(boolQuery);
 
-  // // Add the file type query (if specified)
+  // Add the file type query (if specified)
   // if (fileType) {
-  //   query.query.bool.must.push({
+  //   querytemp.query.bool.must.push({
   //     match: {
   //       doctype: fileType,
   //     },

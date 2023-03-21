@@ -171,7 +171,7 @@ export async function fetchNotes(searchString) {
   // User input values
   var searchQuery = searchString;
   console.log("searchQuery: ", searchQuery);
-  const fileType = "pdf";
+  const fileType = null
 
   // parse the search query which will be a string of comma separated values in quotes ie. ""hello world", "world", "hello""
   // the spaces between the commas will be removed and the string will be split into an array

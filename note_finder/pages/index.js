@@ -36,6 +36,7 @@ const SearchPage = () => {
             }
         };
         xhr.send(formData);
+        return xhr.response;
 
     }
 
@@ -48,7 +49,11 @@ const SearchPage = () => {
             .then((response) => response.text())
             .then((output) => {
                 console.log('GET Response:', output);
-                return output;
+                if (output == "success") {
+                    alert(file["name"] + " Uploaded Successfully");
+                } else {
+                    alert(file["name"] + " Uploaded Failed");
+                }
             });
 
         return output;
@@ -95,11 +100,11 @@ const fileUploadHandler = (e) => {
             let name = e.target.files[i].name
             if (name.includes(".docx")) {
                 var selectedFile = e.target.files[i];
-                docxParser(selectedFile)
-                    .then(function (output) {
-                        console.log("the output is ", output);
-                        postNotes(output);
-                    });
+                docxParser(selectedFile);
+                    //.then(function (output) {
+                        //console.log("the output is ", output);
+                        //postNotes(output);
+                    //});
             } else {
                 setFile(e.target.files[i]);
                 const selectedFile = e.target.files[i];

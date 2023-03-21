@@ -3,8 +3,11 @@ from datetime import date
 from collections import OrderedDict
 from flask import Flask, request, session
 from flask_session import Session
+import requests
 from docx import Document
 from collections import defaultdict
+import os
+from werkzeug.datastructures import ImmutableMultiDict
 
 app = Flask(__name__)
 #Declare that sessions do not have time limits
@@ -12,8 +15,8 @@ app.config["SESSION_PERMANENT"] = False
 #Declare that session is stored on file system
 app.config["SESSION_TYPE"] = "filesystem"
 #A session is a way of storing data btw POST and GET requests
-app.secret_key = 'I have to set this'
 app.config['SESSION_REFRESH_EACH_REQUEST'] = False
+app.secret_key = 'I have to set this'
 Session(app)
 
 def doc2json(doc):
@@ -49,34 +52,47 @@ def doc2json(doc):
         #print(f"Formatted json is: {doc_json}")
     except Exception as e:
         print("doc_json could not be converted to a string")
+        return "fail", 500
 
-    return doc_json
+    headers = {"Authorization": "Basic ZWxhc3RpYzpwYXNzd29yZA==; Content-Type: application/json"}
+    requests.post("http://localhost:9200/notes/_doc", data=doc_json, headers=headers)
+    return "success", 200
 
 @app.route('/send', methods=['POST'])
-
 def handlePostRequest():
     #if POST request
     if request.method == 'POST':
         file = request.files['file']
+        filename = file.filename
+        response = ()
         print("About to display the file here we go")
         print(f"test = {file}")
         print("Haha woah that was fun")
-        doc = Document(file.filename)
-        session['doc'] = doc2json(doc)
-        print(f"session SID is: {session.sid}")
+        cwd = os.getcwd()+'/'
+        if 'temp' not in os.listdir(cwd):
+            os.mkdir(cwd + 'temp')
+        file.save(os.path.join(cwd + 'temp', filename))
 
-        return "File made it to Python server"
+        with open(cwd + 'temp/' + filename, 'rb') as f:
+            data_file = ImmutableMultiDict([("file", f)])
+            print(f"DATA FILE IS {data_file}")
+            doc = Document(f)
+            #session['doc'] = doc2json(doc)
+            response = doc2json(doc)
+            session['res'] = str(response[0])
+        file.close()
+        os.remove(cwd + f'temp\{filename}')
+
+        print(f"session SID for POST is: {session.sid}")
+
+        return response
     
 @app.route('/get', methods=['GET'])
 def handleGetRequest():
     if request.method == 'GET':
         print(f"session SID for GET request is: {session.sid}")
-        doc = session.get('doc', None)
-        if doc:
-            return doc
-        else:
-            print("doc variable was null")
-            return "No file given to server", 400
+        res = session.get('res', None)
+        return res
 
 if __name__ == '__main__':
     app.run(port=8000)

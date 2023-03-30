@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import ReactHtmlParser from 'html-react-parser';
+import ReactHtmlParser from "html-react-parser";
 import { deleteNote } from "@/helpers/elastic-util";
 
 // import router
 import { useRouter } from "next/router";
-
 
 // React functional component for the search page, to be used to display the search results
 // take as input an array of objects, each object representing a search result
@@ -14,7 +13,12 @@ import { useRouter } from "next/router";
 //   fullText: the full text of the document
 //   matchedPortion: the portion of the document that matched the search term
 //   matchPct: the percentage of the document that matched the search term
-function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults }) {
+function ResultCards({
+  searchResults,
+  setSortValue,
+  sortValue,
+  setSearchResults,
+}) {
   const [loading, setLoading] = useState(true);
   // use router to redirect to the open page
   const router = useRouter();
@@ -25,7 +29,7 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
     }
   }, [searchResults]);
 
-  function DeleteAndUpdate(id){
+  function DeleteAndUpdate(id) {
     //need to update search results to remove deleted card
     //TODO: call samee search again here
     //or delete corresponding serach reuslts index and setloading true
@@ -35,13 +39,13 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
     //searchresults = cleanedsearchresults (setSearchResults(cleaned))
     setLoading(true);
     deleteNote(id);
-    var cleanedsearchresults = searchResults.filter(result => result._id != id);
+    var cleanedsearchresults = searchResults.filter(
+      (result) => result._id != id
+    );
     console.log(cleanedsearchresults);
     setSearchResults(cleanedsearchresults); //(setSearchResults(cleaned))
     setLoading(false);
-    
   }
-
 
   // style for the card
   const cardStyle = {
@@ -126,7 +130,7 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
     borderRadius: "5px",
     color: "white",
     padding: "10px",
-    marginRight: "10px"
+    marginRight: "10px",
   };
 
   // style for the download button
@@ -153,11 +157,7 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
     marginBottom: "20px",
   };
 
-  const highlightTextStyle = {
-    
-  }
-
-
+  const highlightTextStyle = {};
 
   async function openDocumentHandler(document_id) {
     // the route is note/[note_id]
@@ -168,7 +168,7 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
       query: { note_id: document_id },
     });
   }
-  
+
   // return loading if the search results are still loading
   return (
     <>
@@ -212,7 +212,6 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
                 }}
               >
                 <option value="matchPct">Match Percentage (High - Low)</option>
-                
               </select>
             </div>
           </div>
@@ -222,22 +221,23 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
               <div style={cardStyle} key={result._id}>
                 <div style={cardContentStyle}>
                   {/* stylize the output data on cards to make visually appealing */}
-                  <div style={titleStyle}>
-                    {" "}
-                    {result._source.title}
-                  </div>
+                  <div style={titleStyle}> {result._source.title}</div>
                   <div style={fileTypeStyle}>
                     <strong>File Type:</strong> {result._source.doctype}
                   </div>
                   <div style={highlightTextStyle}>
                     <strong>
-                    {result.highlight?.text.length || "0"}
-                    {" Occurrence(s): "}
+                      {result.highlight?.text.length || "0"}
+                      {" Occurrence(s): "}
                     </strong>
-                    {/* {ReactHtmlParser(result.highlight?.text)} */}
+                    <br />
                     {result.highlight?.text.map((textItem) => {
-                      {return ReactHtmlParser(textItem + '... ')}
-                    })} 
+                      {
+                        // return ReactHtmlParser(textItem + "..." + );
+                        // return ReactHtmlParse but have new lines after each
+                        return ReactHtmlParser("..." + textItem + "...<br/>");
+                      }
+                    })}
                   </div>
                   <div
                     style={{
@@ -252,10 +252,8 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
                     <strong>Match Score:</strong> {result._score}
                   </div>
                 </div>
-               
-                 
+
                 <div style={buttonStyle}>
-                  
                   <button
                     style={openButtonStyle}
                     onClick={(e) => {
@@ -292,7 +290,7 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
                     style={deleteButtonStyle}
                     onClick={(e) => {
                       e.preventDefault();
-                      DeleteAndUpdate(result._id)
+                      DeleteAndUpdate(result._id);
                     }}
                     //need to update search results to remove deleted card
                     //TODO: call samee search again here
@@ -301,7 +299,6 @@ function ResultCards({ searchResults, setSortValue, sortValue, setSearchResults 
                     //setLoading(true)
                     //cleanedsearchrestults = searchresults.filter(result) => {result._id! = targetID}
                     //searchresults = cleanedsearchresults (setSearchResults(cleaned))
-
                   >
                     Delete
                   </button>

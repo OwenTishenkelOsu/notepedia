@@ -25,148 +25,7 @@ export async function fetchNotes(searchString, fileType) {
   myHeaders.append("Content-Type", "application/json");
 
   // var fileTypeArray = [];
-  // console.log("fileType: ", fileType);
-
-  // // pull out the file types that are included
-  // fileType.forEach((fileType) => {
-  //   if (fileType.included) {
-  //     fileTypeArray.push({
-  //       match: {
-  //         doctype: fileType.fileType,
-  //       },
-  //     });
-  //   }
-  // });
-
-  // var bodyObject = {
-  //   query: {
-  //     bool: {
-  //       must: [
-  //         {
-  //           fuzzy: {
-  //             text: {
-  //               value: searchTerm,
-  //               fuzziness: "AUTO",
-  //             },
-  //           },
-  //         },
-  //       ],
-  //       must: {
-  //         bool: {
-  //           should: fileTypeArray,
-  //         },
-  //       },
-  //     },
-  //   },
-  //   suggest: {
-  //     "my-suggest-1": {
-  //       text: searchTerm,
-  //       term: {
-  //         field: "text",
-  //       },
-  //     },
-  //   },
-  // };
-
-  // // User input values
-  // var searchQuery = searchString;
-  // const fileType = "pdf";
-
-  // // Build the query object
-  // const query = {
-  //   query: {
-  //     bool: {
-  //       must: [],
-  //     },
-  //   },
-  // };
-
-  // // Parse the search query
-  // const parsedQuery = searchQuery.replace(/"([^"]+)"/g, "$1").match(/\S+/g);
-  // let boolQuery;
-  // if (parsedQuery.length === 1) {
-  //   boolQuery = {
-  //     match_phrase: {
-  //       text: parsedQuery[0],
-  //     },
-  //   };
-  // } else {
-  //   boolQuery = {
-  //     bool: [],
-  //   };
-  //   let currentBoolQuery = boolQuery.bool;
-  //   for (let i = 0; i < parsedQuery.length; i++) {
-  //     const term = parsedQuery[i];
-  //     console.log(parsedQuery);
-  //     console.log("term: ", term);
-  //     switch (term.toUpperCase()) {
-  //       case "AND":
-  //         currentBoolQuery.must = [];
-  //         currentBoolQuery = currentBoolQuery.must;
-  //         break;
-  //       case "OR":
-  //         currentBoolQuery.should = [];
-  //         currentBoolQuery = currentBoolQuery.should;
-  //         break;
-  //       case "NOT":
-  //         currentBoolQuery.must_not = [];
-  //         currentBoolQuery = currentBoolQuery.must_not;
-  //         break;
-  //       case "(":
-  //         const subQuery = {
-  //           bool: {},
-  //         };
-  //         let subBoolQuery = subQuery.bool;
-  //         let j = i + 1;
-  //         let subQueryLength = 0;
-  //         while (j < parsedQuery.length) {
-  //           const subTerm = parsedQuery[j];
-  //           subQueryLength += subTerm.length;
-  //           if (subTerm === "(") {
-  //             const subSubQuery = {
-  //               bool: {},
-  //             };
-  //             subBoolQuery.push(subSubQuery.bool);
-  //             subBoolQuery = subSubQuery.bool;
-  //             j++;
-  //           } else if (subTerm === ")") {
-  //             break;
-  //           } else {
-  //             subBoolQuery.push({
-  //               match_phrase: {
-  //                 text: subTerm,
-  //               },
-  //             });
-  //             j++;
-  //           }
-  //         }
-  //         i += subQueryLength + 1;
-  //         currentBoolQuery.push(subQuery.bool);
-  //         break;
-  //       default:
-  //         // console.log(typeof currentBoolQuery);
-  //         // console.log(currentBoolQuery);
-  //         currentBoolQuery.push({
-  //           match_phrase: {
-  //             text: term,
-  //           },
-  //         });
-  //         break;
-  //     }
-  //   }
-  // }
-
-  // // Add the bool query to the main query object
-  // query.query.bool.must.push(boolQuery);
-
-  // Add the file type query (if specified)
-  // if (fileType) {
-  //   query.query.bool.must.push({
-  //     match: {
-  //       doctype: fileType,
-  //     },
-  //   });
-  // }
+  console.log("fileType: ", fileType);
 
   // User input values
   var searchQuery = searchString;
@@ -248,11 +107,43 @@ export async function fetchNotes(searchString, fileType) {
     },
   };
 
-  // Add the file type query (if specified)
-  if (fileType) {
+  // // Add the file type query (if specified)
+  // if (fileType) {
+  //   querytemp.query.bool.must.push({
+  //     match: {
+  //       doctype: fileType,
+  //     },
+  //   });
+  // }
+
+  // An example of the fileType array
+  // [
+  //   { fileType: 'pdf', included: true },
+  //   { fileType: 'docx', included: false },
+  //   { fileType: 'txt', included: false },
+  //   { fileType: 'ppt', included: false },
+  //   { fileType: 'xls', included: false }
+  // ]
+
+  // Add the file type query if included is true
+  let temp = [];
+  fileType.forEach((fileTypeObj) => {
+    if (fileTypeObj.included) {
+      temp.push(fileTypeObj.fileType);
+    }
+  });
+
+  console.log("temp: ", temp);
+
+  // push the file type query to the query object but under a bool should
+  if (temp.length > 0) {
     querytemp.query.bool.must.push({
-      match: {
-        doctype: fileType,
+      bool: {
+        should: temp.map((fileType) => ({
+          match: {
+            doctype: fileType,
+          },
+        })),
       },
     });
   }
@@ -403,7 +294,7 @@ export async function fetchNotes(searchString, fileType) {
 
   // Log the final query object
   // console.log(JSON.stringify(query, null, 2));
-
+  console.log("querytemp: ", querytemp);
   var requestOptions = {
     method: "POST",
     headers: myHeaders,

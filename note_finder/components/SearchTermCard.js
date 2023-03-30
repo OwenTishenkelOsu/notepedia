@@ -29,69 +29,115 @@ const SearchTermCard = ({ searchTermObject, setSearchTermObject }) => {
               return (
                 <div
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-
+                    // add a border
+                    border: "1px solid black",
+                    // add a border radius
+                    borderRadius: "5px",
+                    // add a padding
                     padding: "10px",
+                    // add a card shadow
+                    boxShadow: "0 0 5px 0 rgba(0, 0, 0, 0.5)",
+                    // add a padding
+                    margin: "10px",
                   }}
                   key={index}
                 >
-                  <h1>{obj.searchTerm}</h1>
-                  <div>
+                  <div
+                    style={{
+                      // make items next to each other
+                      display: "flex",
+                      // center items
+                    }}
+                  >
                     {/* add a on/off toggle for the "included" value on obj */}
                     <div
                       style={{
-                        // make this a flexbox
+                        // center vertically
                         display: "flex",
-                        flexDirection: "row",
-                        // move to the same line as the slider
-                        justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
-                      <label htmlFor="exclude">Exclude Term</label>
-                      <input
-                        type="checkbox"
-                        name="exclude"
-                        id="exclude"
-                        checked={obj.exclude}
-                        onChange={(e) => {
-                          setSearchTermObject([
-                            ...searchTermObject.slice(0, index),
-                            {
-                              ...searchTermObject[index],
-                              exclude: e.target.checked,
-                            },
-                            ...searchTermObject.slice(index + 1),
-                          ]);
+                      <h2
+                        style={{
+                          // add a margin
+                          marginRight: "10px",
                         }}
-                      />
-                    </div>
-                    <div>
-                      {obj.exclude === false && (
-                        <Slider
-                          marks={{
-                            0: "Auto",
-                            1: "0",
-                            2: "1",
-                            3: "2",
-                          }}
-                          min={0}
-                          max={3}
-                          step={null}
-                          defaultValue={obj.editDistance}
-                          onChange={(value) =>
+                      >
+                        Term: {obj.searchTerm}
+                      </h2>
+                      <div
+                        style={{
+                          marginRight: "10px",
+                        }}
+                      >
+                        <label htmlFor="exclude">
+                          Looking for documents without this term?
+                        </label>
+                        <input
+                          type="checkbox"
+                          name="exclude"
+                          id="exclude"
+                          checked={obj.exclude}
+                          onChange={(e) => {
                             setSearchTermObject([
                               ...searchTermObject.slice(0, index),
                               {
                                 ...searchTermObject[index],
-                                editDistance: value,
+                                exclude: e.target.checked,
                               },
                               ...searchTermObject.slice(index + 1),
-                            ])
-                          }
+                            ]);
+                          }}
                         />
-                      )}
+                      </div>
                     </div>
+                  </div>
+                  <br />
+                  <div
+                    style={{
+                      // make this 80% width
+                      width: "100%",
+                      // add padding
+                    }}
+                  >
+                    {obj.exclude === false && (
+                      <div
+                        style={{
+                          // add top padding
+                          padding: "10px",
+                        }}
+                      >
+                        <h3>Edit Distance</h3>
+                        <div
+                          style={{
+                            width: "50%",
+                          }}
+                        >
+                          <Slider
+                            marks={{
+                              0: "Auto",
+                              1: "0",
+                              2: "1",
+                              3: "2",
+                            }}
+                            min={0}
+                            max={3}
+                            step={null}
+                            defaultValue={obj.editDistance}
+                            onChange={(value) =>
+                              setSearchTermObject([
+                                ...searchTermObject.slice(0, index),
+                                {
+                                  ...searchTermObject[index],
+                                  editDistance: value,
+                                },
+                                ...searchTermObject.slice(index + 1),
+                              ])
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               );

@@ -235,10 +235,10 @@ const SearchPage = () => {
             How it works
           </h2>
           <p>
-            Enter comma seperated search terms to query your knowledge base for
-            the most relevant documents. After submitting your terms of
-            interest, you will be able to apply more advanced search parameters.
-            Try it out!{" "}
+            Enter comma seperated search terms (or phrases) to query your
+            knowledge base for the most relevant documents. After submitting
+            your terms of interest, you will be able to apply more advanced
+            search parameters. Try it out!{" "}
           </p>
         </div>
       </div>
@@ -395,7 +395,7 @@ const SearchPage = () => {
         </div>
       </Form>
       {firstSearch ? (
-        <p>Enter a search term and file type to begin searching.</p>
+        <p>Enter search terms or phrases to begin searching.</p>
       ) : (
         <div className="styles.search-results">
           <div className={styles["search-term-cards"]}>

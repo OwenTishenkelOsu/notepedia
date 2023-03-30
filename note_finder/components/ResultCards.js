@@ -188,10 +188,20 @@ function ResultCards({
               marginBottom: "20px",
             }}
           >
-            <div>
+            <div
+              style={{
+                // add padding to the top
+                paddingTop: "10px",
+              }}
+            >
               <div
                 style={{
-                  marginBottom: "5px",
+                  // move the dropdown to the right of the page
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  // add space above
+                  marginBottom: "10px",
                 }}
               >
                 Sort by:

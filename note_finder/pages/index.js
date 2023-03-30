@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Form, Input, Select, Button } from "antd";
+import { Form, Input, Select, Button, Slider } from "antd";
 import { useRouter } from "next/router";
 const { Option } = Select;
 import styles from "../styles/searchPage.module.css";
 import ResultCards from "../components/ResultCards";
+import SearchTermCard from "../components/SearchTermCard";
+import Header from "../components/Header";
 import Link from "next/link";
 
 const SearchPage = () => {
@@ -21,8 +23,13 @@ const SearchPage = () => {
   const [sortValue, setSortValue] = useState("matchPct");
   const [searchSuggestions, setSearchSuggestions] = useState(null);
   const [updatingSuggestions, setUpdatingSuggestions] = useState(false);
+  const [updatingFileType, setUpdatingFileType] = useState(false);
 
-  //
+  const [searchTermObject, setSearchTermObject] = useState({
+    searchTerm: "",
+    editDistance: "AUTO",
+    exclude: false,
+  });
 
   // const fileUploadHandler = (e) => {
   //     e.preventDefault();
@@ -68,22 +75,65 @@ const SearchPage = () => {
     { fileType: "ppt", included: true },
     { fileType: "xls", included: true },
   ];
+  useEffect(() => {
+    if (searchTermObject.searchTerm != "") {
+      reconstructSearchTerm();
+    }
+  }, [searchTermObject]);
+
+  function reconstructSearchTerm() {
+    let newSearchTerm = "";
+    searchTermObject.forEach((term) => {
+      if (term.exclude == true) {
+        newSearchTerm += "-" + term.searchTerm + ", ";
+      } else {
+        if (term.editDistance == "AUTO") {
+          newSearchTerm += term.searchTerm + ", ";
+        } else {
+          console.log("term.editDistance: ", term.editDistance);
+          let dist = term.editDistance;
+          if (term.editDistance !== 0) {
+            dist = dist - 1;
+            newSearchTerm += "+" + dist + term.searchTerm + ", ";
+          } else {
+            newSearchTerm += term.searchTerm + ", ";
+          }
+        }
+      }
+    });
+
+    // remove the last comma and space
+    newSearchTerm = newSearchTerm.slice(0, -2);
+
+    console.log("newSearchTerm: ", newSearchTerm);
+
+    callSearchApi(newSearchTerm);
+  }
 
   const handleSearch = () => {
     setLoading(true);
     if (firstSearch) {
       setFirstSearch(false);
     }
-    // // create loading state and show loading indicator for a short time to simulate a search
-    // setTimeout(() => {
-    //   // remove loading state and show search results
-    //   if (firstSearch) {
-    //     setFirstSearch(false);
-    //     setSortValue("matchPct");
-    //   }
-    //   setLoading(false);
-    // }, 2000);
 
+    // need to decompose the search term into individual words
+    const searchTerms = searchTerm.split(",");
+    // strip whitespace from each search term
+    const cleanSearchTerms = searchTerms.map((term) => term.trim());
+
+    // make a new array of objects with the search term and edit distance
+    // then set the state of searchTermObject to this new array
+    const newSearchTermObject = cleanSearchTerms.map((term) => {
+      return {
+        searchTerm: term,
+        editDistance: "AUTO",
+        exclude: false,
+      };
+    });
+    setSearchTermObject(newSearchTermObject);
+  };
+
+  function callSearchApi(searchTerm) {
     // make a fetch request to the API
     fetch("/api/search", {
       method: "POST",
@@ -92,6 +142,7 @@ const SearchPage = () => {
       },
       body: JSON.stringify({
         searchString: searchTerm,
+        fileType: fileType,
       }),
     })
       .then((res) => res.json())
@@ -114,12 +165,12 @@ const SearchPage = () => {
           setSearchResults([]);
         }
       });
-  };
+  }
 
   const resetSearchHandler = (e) => {
     e.preventDefault();
     setSearchTerm("");
-    setFileType(baseFileTypes);
+    setFileType([]);
     setFirstSearch(true);
   };
 
@@ -129,6 +180,12 @@ const SearchPage = () => {
       setUpdatingSuggestions(false);
     }
   }, [searchTerm]);
+
+  useEffect(() => {
+    if (fileType && fileType.length > 0 && !firstSearch) {
+      handleSearch();
+    }
+  }, [fileType]);
 
   useEffect(() => {
     if (firstSearch) {
@@ -143,11 +200,67 @@ const SearchPage = () => {
 
   return (
     <div className={styles["search-page"]}>
-      <h1>Search</h1>
+      <Header />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "80%",
+          // make them centered
+          margin: "auto",
+          // make the items stacked
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            // make the items next to each other
+            display: "flex",
 
-      <br></br>
-      <Form layout="horizontal">
-        <Form.Item>
+            // add padding
+            padding: "20px",
+
+            // make the items centered
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <h2
+            style={{
+              // push the title to the left
+              marginRight: "20px",
+            }}
+          >
+            How it works
+          </h2>
+          <p>
+            Enter comma seperated search terms to query your knowledge base for
+            the most relevant documents. After submitting your terms of
+            interest, you will be able to apply more advanced search parameters.
+            Try it out!{" "}
+          </p>
+        </div>
+      </div>
+      <br />
+      <Form
+        layout="horizontal"
+        style={{
+          // make the items next to each other
+          display: "flex",
+
+          // add padding
+          padding: "10px",
+          // add spacing between the items
+          gap: "10px",
+        }}
+      >
+        <Form.Item
+          style={{
+            // make this not take up the whole width
+            width: "70%",
+          }}
+        >
           <Input
             required={true}
             placeholder="Search terms"
@@ -155,7 +268,12 @@ const SearchPage = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          style={{
+            // make this have minimum width
+            minWidth: "100px",
+          }}
+        >
           <Select
             mode="multiple"
             placeholder="File type"
@@ -168,6 +286,7 @@ const SearchPage = () => {
               console.log("fileType: ", fileType);
               var tempFileType = baseFileTypes;
               tempFileType.forEach((fileType) => {
+                console.log("fileType iteration: ", fileType);
                 if (value.includes(fileType.fileType)) {
                   fileType.included = true;
                 } else {
@@ -185,7 +304,8 @@ const SearchPage = () => {
             <Option value="txt">TXT</Option>
           </Select>
         </Form.Item>
-        {searchSuggestions && searchSuggestions.length > 0 && (
+        {/* FIXME: suggestions */}
+        {/* {searchSuggestions && searchSuggestions.length > 0 && (
           <div>
             <p>Try instead: </p>
             {searchSuggestions.map((suggestion, index) => (
@@ -219,7 +339,7 @@ const SearchPage = () => {
               </div>
             ))}
           </div>
-        )}
+        )} */}
         <div
           style={{
             // make these appear on the same line
@@ -278,6 +398,19 @@ const SearchPage = () => {
         <p>Enter a search term and file type to begin searching.</p>
       ) : (
         <div className="styles.search-results">
+          <div className={styles["search-term-cards"]}>
+            {/* {searchTermObject.map((object, index) => (
+              <SearchTermCard
+                key={index}
+                termObject={object}
+                setSearchTermObject={setSearchTermObject}
+              />
+            ))} */}
+            <SearchTermCard
+              searchTermObject={searchTermObject}
+              setSearchTermObject={setSearchTermObject}
+            />
+          </div>
           {loading ? (
             <div>Loading...</div>
           ) : (

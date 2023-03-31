@@ -237,7 +237,8 @@ function ResultCards({
                   </div>
                   <div style={highlightTextStyle}>
                     <strong>
-                      {result.highlight?.text.length || "0"}
+                      {result.highlight?.text.length}
+
                       {" Occurrence(s): "}
                     </strong>
                     <br />

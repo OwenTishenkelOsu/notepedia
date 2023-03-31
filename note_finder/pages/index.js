@@ -172,6 +172,7 @@ const SearchPage = () => {
     setSearchTerm("");
     setFileType([]);
     setFirstSearch(true);
+    // router.reload();
   };
 
   useEffect(() => {
@@ -387,11 +388,7 @@ const SearchPage = () => {
         </div>
         <div>
           {/* results count if not on first search */}
-          {!firstSearch && (
-            <p>
-              {searchResults.length} results found for "{searchTerm}".
-            </p>
-          )}
+          {!firstSearch && <p>{searchResults.length} results found</p>}
         </div>
       </Form>
       {firstSearch ? (

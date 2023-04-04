@@ -119,8 +119,9 @@ const SearchPage = () => {
     // need to decompose the search term into individual words
     const searchTerms = searchTerm.split(",");
     // strip whitespace from each search term
-    const cleanSearchTerms = searchTerms.map((term) => term.trim());
-
+    
+      const cleanSearchTerms = searchTerms.map((term) => term.trim());
+    
     // make a new array of objects with the search term and edit distance
     // then set the state of searchTermObject to this new array
     const newSearchTermObject = cleanSearchTerms.map((term) => {
@@ -235,8 +236,8 @@ const SearchPage = () => {
             How it works
           </h2>
           <p>
-            Enter comma seperated search terms (or phrases) to query your
-            knowledge base for the most relevant documents. After submitting
+            Enter comma seperated song terms (or phrases) to query your
+            knowledge base for the most related songs. After submitting
             your terms of interest, you will be able to apply more advanced
             search parameters. Try it out!{" "}
           </p>
@@ -274,35 +275,7 @@ const SearchPage = () => {
             minWidth: "100px",
           }}
         >
-          <Select
-            mode="multiple"
-            placeholder="File type"
-            // value is where the "included" property of the fileType object is true
-            value={fileType
-              .filter((fileType) => fileType.included)
-              .map((fileType) => fileType.fileType)}
-            onChange={(value) => {
-              console.log("value: ", value);
-              console.log("fileType: ", fileType);
-              var tempFileType = baseFileTypes;
-              tempFileType.forEach((fileType) => {
-                console.log("fileType iteration: ", fileType);
-                if (value.includes(fileType.fileType)) {
-                  fileType.included = true;
-                } else {
-                  fileType.included = false;
-                }
-              });
-              console.log("tempFileType: ", tempFileType);
-              setFileType(tempFileType);
-            }}
-          >
-            <Option value="pdf">PDF</Option>
-            <Option value="docx">DOCX</Option>
-            <Option value="ppt">PPT</Option>
-            <Option value="xls">XLS</Option>
-            <Option value="txt">TXT</Option>
-          </Select>
+          
         </Form.Item>
         {/* FIXME: suggestions */}
         {/* {searchSuggestions && searchSuggestions.length > 0 && (

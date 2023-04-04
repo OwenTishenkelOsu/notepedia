@@ -63,18 +63,18 @@ function Header() {
     <header style={headerStyle}>
       <div style={headerTextStyle}>
         <h1>
-          <Link href="/">Notepedia</Link>
+          <Link href="/">Songpedia</Link>
         </h1>
       </div>
       <div style={linkDivStyle}>
         <Link href="/" style={linkStyle}>
-          Search Notes
+          Search Songs
         </Link>
         <Link href="/notes" style={linkStyle}>
-          My Notes
+          My Songs
         </Link>
         <Link href="/notes/explore" style={linkStyle}>
-          Data Package Store
+          Song Store
         </Link>
       </div>
     </header>

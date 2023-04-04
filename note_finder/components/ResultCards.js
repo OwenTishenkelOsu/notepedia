@@ -24,7 +24,7 @@ function ResultCards({
   const router = useRouter();
 
   useEffect(() => {
-    if (searchResults !== null) {
+    if (searchResults !== null || searchResults==0) {
       setLoading(false);
     }
   }, [searchResults]);

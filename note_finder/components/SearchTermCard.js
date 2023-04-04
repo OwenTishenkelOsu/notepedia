@@ -71,7 +71,7 @@ const SearchTermCard = ({ searchTermObject, setSearchTermObject }) => {
                         }}
                       >
                         <label htmlFor="exclude">
-                          Looking for documents without this term?
+                          Looking for songs without this term?
                         </label>
                         <input
                           type="checkbox"
@@ -107,7 +107,7 @@ const SearchTermCard = ({ searchTermObject, setSearchTermObject }) => {
                           padding: "10px",
                         }}
                       >
-                        <h3>Edit Distance</h3>
+                        <h3>How closely should the lyrics match this term? (0 is close, 2 is far)</h3>
                         <div
                           style={{
                             width: "50%",

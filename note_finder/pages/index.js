@@ -119,9 +119,11 @@ const SearchPage = () => {
     // need to decompose the search term into individual words
     const searchTerms = searchTerm.split(",");
     // strip whitespace from each search term
+    console.log(searchTerms);
     
       const cleanSearchTerms = searchTerms.map((term) => term.trim());
-    
+      
+      
     // make a new array of objects with the search term and edit distance
     // then set the state of searchTermObject to this new array
     const newSearchTermObject = cleanSearchTerms.map((term) => {
@@ -133,7 +135,7 @@ const SearchPage = () => {
     });
     setSearchTermObject(newSearchTermObject);
   };
-
+  
   function callSearchApi(searchTerm) {
     // make a fetch request to the API
     fetch("/api/search", {
@@ -275,7 +277,32 @@ const SearchPage = () => {
             minWidth: "100px",
           }}
         >
-          
+          <Select
+            mode="multiple"
+            placeholder="Genre"
+            // value is where the "included" property of the fileType object is true
+            value={fileType
+              .filter((fileType) => fileType.included)
+              .map((fileType) => fileType.fileType)}
+            onChange={(value) => {
+              console.log("value: ", value);
+              console.log("fileType: ", fileType);
+              var tempFileType = baseFileTypes;
+              tempFileType.forEach((fileType) => {
+                console.log("fileType iteration: ", fileType);
+                if (value.includes(fileType.fileType)) {
+                  fileType.included = true;
+                } else {
+                  fileType.included = false;
+                }
+              });
+              console.log("tempFileType: ", tempFileType);
+              setFileType(tempFileType);
+            }}
+          >
+            <Option value="pop">Pop</Option>
+            
+          </Select>
         </Form.Item>
         {/* FIXME: suggestions */}
         {/* {searchSuggestions && searchSuggestions.length > 0 && (

@@ -128,7 +128,7 @@ export default function NoteIndex() {
                         >
                           Text Preview:{" "}
                         </strong>
-                        {note._source.text.substring(0, 250) + "..."}
+                        {note._source.text?.substring(0, 250) + "..."}
                       </p>
                       <p>
                         {" "}

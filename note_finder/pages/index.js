@@ -69,11 +69,9 @@ const SearchPage = () => {
   // }
 
   const baseFileTypes = [
-    { fileType: "pdf", included: true },
-    { fileType: "docx", included: true },
-    { fileType: "txt", included: true },
-    { fileType: "ppt", included: true },
-    { fileType: "xls", included: true },
+    { fileType: "rap", included: true },
+    { fileType: "pop", included: true },
+
   ];
   useEffect(() => {
     if (searchTermObject.searchTerm != "") {
@@ -301,6 +299,7 @@ const SearchPage = () => {
             }}
           >
             <Option value="pop">Pop</Option>
+            <Option value="rap">Rap</Option>
             
           </Select>
         </Form.Item>

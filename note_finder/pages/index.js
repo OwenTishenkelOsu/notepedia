@@ -68,6 +68,7 @@ const SearchPage = () => {
   //     }
   // }
 
+  //TODO: WANT TO CHANGE FILETYPE TO EITHER GENRE OR ARTIST
   const baseFileTypes = [
     { fileType: "pdf", included: true },
     { fileType: "docx", included: true },

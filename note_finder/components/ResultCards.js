@@ -163,6 +163,7 @@ function ResultCards({
     // the route is note/[note_id]
     // the note_id is the document_id
     // open a new tab when the user clicks on the open button
+    //TODO: CHANGE ROUTE PATH
     router.push({
       pathname: "/note/[note_id]",
       query: { note_id: document_id },
@@ -230,14 +231,15 @@ function ResultCards({
             {searchResults.map((result) => (
               <div style={cardStyle} key={result._id}>
                 <div style={cardContentStyle}>
-                  {/* stylize the output data on cards to make visually appealing */}
+                  {/* stylize the output data on cards to make visually appealing */
+                  /** TODO: CHANGE FILE TYPE STUFF HERE */}
                   <div style={titleStyle}> {result._source.title}</div>
                   <div style={fileTypeStyle}>
                     <strong>File Type:</strong> {result._source.doctype}
                   </div>
                   <div style={highlightTextStyle}>
                     <strong>
-                      {result.highlight?.text.length || "0"}
+                      {result.highlight?.text.length || "0" /** TODO: CHANGE TEXT FIELD TO LYRICS */}
                       {" Occurrence(s): "}
                     </strong>
                     <br />
@@ -269,6 +271,7 @@ function ResultCards({
                     onClick={(e) => {
                       e.preventDefault();
                       // open the document in a new tab at route /notes/[note_id]
+                      //TODO: CHNAGE PATH NAME
                       window.open(`/notes/notePage?id=${result._id}`);
                     }}
                   >
@@ -280,7 +283,7 @@ function ResultCards({
                       e.preventDefault();
                       console.log(result._source);
                       var data = result._source;
-                      var filename = result._source.title;
+                      var songname = result._source.title;
                       // Creating a blob object from non-blob data using the Blob constructor
                       const blob = new Blob([JSON.stringify(data)], {
                         type: "application/json",
@@ -289,7 +292,7 @@ function ResultCards({
                       // Create a new anchor element
                       const a = document.createElement("a");
                       a.href = url;
-                      a.download = filename || "download";
+                      a.download = songname || "download";
                       a.click();
                       a.remove();
                     }}

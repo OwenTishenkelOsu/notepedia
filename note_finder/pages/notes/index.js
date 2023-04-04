@@ -6,7 +6,7 @@ import styles from "../../styles/searchPage.module.css";
 
 export default function NoteIndex() {
   const [loading, setLoading] = useState(false);
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState([]); //TODOL MIGHT WANT TO CHANGE NOTES TO SONGS
   const router = useRouter();
 
   useEffect(() => {
@@ -25,9 +25,9 @@ export default function NoteIndex() {
         redirect: "follow",
         body: raw,
       };
-
+      //TODO: CHANGE PATHNAME
       fetch("http://www.localhost:9200/notes/_search", requestOptions)
-        .then((response) => response.text())
+        .then((response) => response.text()) //TODO: CHANGE TEXT FIELD TO LYRICS
         .then((result) => {
           setNotes(JSON.parse(result).hits.hits);
         });
@@ -59,9 +59,9 @@ export default function NoteIndex() {
         <div className={styles["search-page"]}>
           <Header />
           <div>
-            <h1>Notes</h1>
+            <h1>Songs</h1>
             <p>
-              Here you can view all of your notes. You search for all your notes
+              Here you can view all of your songs. You search for all your songs
               by clicking{" "}
               <Link
                 href="/"
@@ -128,7 +128,7 @@ export default function NoteIndex() {
                         >
                           Text Preview:{" "}
                         </strong>
-                        {note._source.text?.substring(0, 250) + "..."}
+                        {note._source.text?.substring(0, 250) + "..." /* TODO: CHANGE TEXT TO LYRICS */}
                       </p>
                       <p>
                         {" "}
@@ -152,7 +152,7 @@ export default function NoteIndex() {
                       }}
                     >
                       <Link
-                        href={`/notes/notePage?id=${note._id}`}
+                        href={`/notes/notePage?id=${note._id}`} //TODO: CHANGE PATH NAME
                         style={{
                           // make it look like a button
                           backgroundColor: "white",

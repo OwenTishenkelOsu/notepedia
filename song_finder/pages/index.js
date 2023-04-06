@@ -50,7 +50,7 @@ const SearchPage = () => {
   //                 docxParser(selectedFile)
   //                     .then(function (output) {
   //                         console.log("the output is ", output);
-  //                         postNotes(output);
+  //                         postsongs(output);
   //                     });
   //             } else {
   //                 const reader = new FileReader();
@@ -59,7 +59,7 @@ const SearchPage = () => {
   //                 reader.readAsText(selectedFile); // read the file as text
   //                 reader.onload = (event) => {
   //                     fileContents = event.target.result;
-  //                     postNotes(fileContents);
+  //                     postsongs(fileContents);
   //                     // do something with the file contents, such as sending them to the server for further processing
   //                 }
   //             }
@@ -395,7 +395,7 @@ const SearchPage = () => {
         </div>
       </Form>
       {firstSearch ? (
-        <p>Enter search terms or phrases to begin searching.</p>
+        <p>Enter lyrics to begin searching.</p>
       ) : (
         <div className="styles.search-results">
           <div className={styles["search-term-cards"]}>

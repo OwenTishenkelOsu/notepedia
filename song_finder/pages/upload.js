@@ -54,13 +54,13 @@ function Upload() {
     document.getElementById("input").value = "";
   }
 
-  async function postNotes(textBody) {
+  async function postsongs(textBody) {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
     // allow from localhost
     myHeaders.append("Content-Type", "application/json");
 
-    fetch("http://localhost:9200/notes/_doc", {
+    fetch("http://localhost:9200/songs/_doc", {
       method: "POST",
       headers: myHeaders,
       redirect: "follow",
@@ -96,7 +96,7 @@ function Upload() {
           var selectedFile = e.target.files[i];
           docxParser(selectedFile).then(function (output) {
             console.log("the output is ", output);
-            postNotes(output);
+            postsongs(output);
           });
         } else {
           const reader = new FileReader();
@@ -105,7 +105,7 @@ function Upload() {
           reader.readAsText(selectedFile); // read the file as text
           reader.onload = (event) => {
             fileContents = event.target.result;
-            postNotes(fileContents);
+            postsongs(fileContents);
             // do something with the file contents, such as sending them to the server for further processing
           };
         }

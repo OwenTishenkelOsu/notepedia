@@ -4,9 +4,9 @@ import Link from "next/link";
 import Header from "../../components/Header";
 import styles from "../../styles/searchPage.module.css";
 
-export default function NoteIndex() {
+export default function songIndex() {
   const [loading, setLoading] = useState(false);
-  const [notes, setNotes] = useState([]); //TODOL MIGHT WANT TO CHANGE NOTES TO SONGS
+  const [songs, setsongs] = useState([]); 
   const router = useRouter();
 
   useEffect(() => {
@@ -25,21 +25,21 @@ export default function NoteIndex() {
         redirect: "follow",
         body: raw,
       };
-      //TODO: CHANGE PATHNAME
-      fetch("http://www.localhost:9200/notes/_search", requestOptions)
-        .then((response) => response.text()) //TODO: CHANGE TEXT FIELD TO LYRICS
+      
+      fetch("http://www.localhost:9200/songs/_search", requestOptions)
+        .then((response) => response.text()) 
         .then((result) => {
-          setNotes(JSON.parse(result).hits.hits);
+          setsongs(JSON.parse(result).hits.hits);
         });
     }
   }, [router.isReady]);
 
   useEffect(() => {
-    if (notes.length > 0) {
-      console.log(notes);
+    if (songs.length > 0) {
+      console.log(songs);
       setLoading(false);
     }
-  }, [notes]);
+  }, [songs]);
 
   // style for the open button
   const openButtonStyle = {
@@ -76,7 +76,7 @@ export default function NoteIndex() {
             </p>
           </div>
           <div>
-            {notes.map((note, index) => {
+            {songs.map((song, index) => {
               return (
                 // FIXME: make this component not look stupid
                 <div
@@ -116,7 +116,7 @@ export default function NoteIndex() {
                         >
                           Title:{" "}
                         </strong>
-                        {note._source.title}
+                        {song._source.title}
                       </h4>
                       <p>
                         {" "}
@@ -126,9 +126,9 @@ export default function NoteIndex() {
                             fontSize: "1rem",
                           }}
                         >
-                          Text Preview:{" "}
+                          Artist:{" "}
                         </strong>
-                        {note._source.text?.substring(0, 250) + "..." /* TODO: CHANGE TEXT TO LYRICS */}
+                        {song._source.artist}
                       </p>
                       <p>
                         {" "}
@@ -138,12 +138,11 @@ export default function NoteIndex() {
                             fontSize: "1rem",
                           }}
                         >
-                          Source:{" "}
+                          Matched Lyrics:{" "}
                         </strong>
-                        {note._source.source === undefined
-                          ? "Personal"
-                          : note._source.source}
+                        {song._source.lyrics?.substring(0, 250) + "..."}
                       </p>
+                      
                     </div>
                     <div
                       style={{
@@ -152,7 +151,7 @@ export default function NoteIndex() {
                       }}
                     >
                       <Link
-                        href={`/notes/notePage?id=${note._id}`} //TODO: CHANGE PATH NAME
+                        href={`/songs/songPage?id=${song._id}`}
                         style={{
                           // make it look like a button
                           backgroundColor: "white",
@@ -165,7 +164,7 @@ export default function NoteIndex() {
                           marginLeft: "auto",
                         }}
                       >
-                        {"Open Note"}
+                        {"Open song"}
                       </Link>
                     </div>
                   </div>

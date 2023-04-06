@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ReactHtmlParser from "html-react-parser";
-import { deleteNote } from "@/helpers/elastic-util";
+import { deletesong } from "@/helpers/elastic-util";
 
 // import router
 import { useRouter } from "next/router";
@@ -31,14 +31,13 @@ function ResultCards({
 
   function DeleteAndUpdate(id) {
     //need to update search results to remove deleted card
-    //TODO: call samee search again here
     //or delete corresponding serach reuslts index and setloading true
 
     //setLoading(true)
     //cleanedsearchrestults = searchresults.filter(result) => {result._id! = targetID}
     //searchresults = cleanedsearchresults (setSearchResults(cleaned))
     setLoading(true);
-    deleteNote(id);
+    deletesong(id);
     var cleanedsearchresults = searchResults.filter(
       (result) => result._id != id
     );
@@ -160,13 +159,12 @@ function ResultCards({
   const highlightTextStyle = {};
 
   async function openDocumentHandler(document_id) {
-    // the route is note/[note_id]
-    // the note_id is the document_id
+    // the route is song/[song_id]
+    // the song_id is the document_id
     // open a new tab when the user clicks on the open button
-    //TODO: CHANGE ROUTE PATH
     router.push({
-      pathname: "/note/[note_id]",
-      query: { note_id: document_id },
+      pathname: "/song/[song_id]",
+      query: { song_id: document_id },
     });
   }
 
@@ -232,18 +230,18 @@ function ResultCards({
               <div style={cardStyle} key={result._id}>
                 <div style={cardContentStyle}>
                   {/* stylize the output data on cards to make visually appealing */
-                  /** TODO: CHANGE FILE TYPE STUFF HERE */}
+                  }
                   <div style={titleStyle}> {result._source.title}</div>
                   <div style={fileTypeStyle}>
-                    <strong>File Type:</strong> {result._source.doctype}
+                    <strong>Artist:</strong> {result._source.artist}
                   </div>
                   <div style={highlightTextStyle}>
                     <strong>
-                      {result.highlight?.text.length || "0" /** TODO: CHANGE TEXT FIELD TO LYRICS */}
+                      {result.highlight?.lyrics.length || "0"}
                       {" Occurrence(s): "}
                     </strong>
                     <br />
-                    {result.highlight?.text.map((textItem) => {
+                    {result.highlight?.lyrics.map((textItem) => {
                       {
                         // return ReactHtmlParser(textItem + "..." + );
                         // return ReactHtmlParse but have new lines after each
@@ -270,9 +268,8 @@ function ResultCards({
                     style={openButtonStyle}
                     onClick={(e) => {
                       e.preventDefault();
-                      // open the document in a new tab at route /notes/[note_id]
-                      //TODO: CHNAGE PATH NAME
-                      window.open(`/notes/notePage?id=${result._id}`);
+                      // open the document in a new tab at route /songs/[song_id]
+                      window.open(`/songs/songPage?id=${result._id}`);
                     }}
                   >
                     Open in Preview
@@ -306,7 +303,6 @@ function ResultCards({
                       DeleteAndUpdate(result._id);
                     }}
                     //need to update search results to remove deleted card
-                    //TODO: call samee search again here
                     //or delete corresponding serach reuslts index and setloading true
 
                     //setLoading(true)

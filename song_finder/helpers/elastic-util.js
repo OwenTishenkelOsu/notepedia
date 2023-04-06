@@ -2,7 +2,7 @@ import { raw } from "file-loader";
 
 // function to fetch data from ElasticSearch
 
-export async function postNotes(body, fileType) {
+export async function postsongs(body, fileType) {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // allow from localhost
@@ -14,10 +14,10 @@ export async function postNotes(body, fileType) {
     redirect: "follow",
     body: body,
   };
-  const response = await fetch("http://localhost:9200/notes", requestOptions);
+  const response = await fetch("http://localhost:9200/songs", requestOptions);
 }
 
-export async function fetchNotes(searchString, fileType) {
+export async function fetchsongs(searchString, fileType) {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // allow from localhost
@@ -102,7 +102,7 @@ export async function fetchNotes(searchString, fileType) {
     },
     highlight: {
       fields: {
-        text: {},
+        lyrics: {},
       },
     },
   };
@@ -136,17 +136,17 @@ export async function fetchNotes(searchString, fileType) {
   console.log("temp: ", temp);
 
   // push the file type query to the query object but under a bool should
-  if (temp.length > 0) {
-    querytemp.query.bool.must.push({
-      bool: {
-        should: temp.map((fileType) => ({
-          match: {
-            doctype: fileType,
-          },
-        })),
-      },
-    });
-  }
+  // if (temp.length > 0) {
+  //   querytemp.query.bool.must.push({
+  //     bool: {
+  //       should: temp.map((fileType) => ({
+  //         match: {
+  //           doctype: fileType,
+  //         },
+  //       })),
+  //     },
+  //   });
+  // }
 
   // Add the search for terms
   if (searchFor.length > 0) {
@@ -154,7 +154,7 @@ export async function fetchNotes(searchString, fileType) {
       bool: {
         should: searchFor.map(({ term, fuzziness }) => ({
           match: {
-            text: {
+            lyrics: {
               query: term,
               // if no fuzziness is specified then the default is "AUTO"
               fuzziness: fuzziness === -1 ? "AUTO" : fuzziness,
@@ -171,7 +171,7 @@ export async function fetchNotes(searchString, fileType) {
       bool: {
         must_not: exclude.map((term) => ({
           match: {
-            text: {
+            lyrics: {
               query: term,
             },
           },
@@ -187,7 +187,7 @@ export async function fetchNotes(searchString, fileType) {
   //     bool: {
   //       should: parsedQueryT.map((term) => ({
   //         match: {
-  //           text: {
+  //           lyrics: {
   //             query: term,
   //           },
   //         },
@@ -215,7 +215,7 @@ export async function fetchNotes(searchString, fileType) {
   // if (parsedQuery.length === 1) {
   //   boolQuery = {
   //     match_phrase: {
-  //       text: parsedQuery[0],
+  //       lyrics: parsedQuery[0],
   //     },
   //   };
   // } else {
@@ -260,7 +260,7 @@ export async function fetchNotes(searchString, fileType) {
   //           } else {
   //             subBoolQuery.push({
   //               match_phrase: {
-  //                 text: subTerm,
+  //                 lyrics: subTerm,
   //               },
   //             });
   //             j++;
@@ -272,7 +272,7 @@ export async function fetchNotes(searchString, fileType) {
   //       default:
   //         currentBoolQuery.push({
   //           match_phrase: {
-  //             text: term,
+  //             lyrics: term,
   //           },
   //         });
   //         break;
@@ -305,7 +305,7 @@ export async function fetchNotes(searchString, fileType) {
   // console.log("requestOptions: ", requestOptions);
 
   const response = await fetch(
-    "http://localhost:9200/notes/_search",
+    "http://localhost:9200/songs/_search",
     requestOptions
   );
   const result = await response.json();
@@ -313,7 +313,7 @@ export async function fetchNotes(searchString, fileType) {
   return result;
 }
 
-export async function deleteNote(note_id) {
+export async function deletesong(song_id) {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // allow from localhost
@@ -326,14 +326,14 @@ export async function deleteNote(note_id) {
     redirect: "follow",
   };
 
-  var url = "http://localhost:9200/notes/_doc/" + note_id; //+ "?refresh=true";
+  var url = "http://localhost:9200/songs/_doc/" + song_id; //+ "?refresh=true";
   console.log(url);
   const response = await fetch(url, requestOptions);
   const result = await response.json();
   return result;
 }
 
-export async function getElasticNoteById(note_id) {
+export async function getElasticsongById(song_id) {
   // var myHeaders = new Headers();
   // myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   // // allow from localhost
@@ -351,7 +351,7 @@ export async function getElasticNoteById(note_id) {
   var myHeaders = new Headers(myHeaders);
 
   console.log("myHeaders", myHeaders);
-
+requestOptions
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
@@ -359,14 +359,14 @@ export async function getElasticNoteById(note_id) {
     keepalive: "true",
   };
 
-  var url = "http://localhost:9200/notes/_doc/" + note_id;
+  var url = "http://localhost:9200/songs/_doc/" + song_id;
 
   const response = await fetch(url, requestOptions);
   const result = await response.json();
   return result;
 }
 
-export async function getAllElasticNotes() {
+export async function getAllElasticsongs() {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic ZWxhc3RpYzpwYXNzd29yZA==");
   myHeaders.append("Content-Type", "application/json");
@@ -380,8 +380,8 @@ export async function getAllElasticNotes() {
     redirect: "follow",
   };
 
-  fetch("http://www.localhost:9200/notes/_search", requestOptions)
-    .then((response) => response.text())
+  fetch("http://www.localhost:9200/songs/_search", requestOptions)
+    .then((response) => response.lyrics())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
 }

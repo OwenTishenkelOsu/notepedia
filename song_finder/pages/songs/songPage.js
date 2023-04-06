@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getElasticNoteById } from "../../helpers/elastic-util";
+import { getElasticsongById } from "../../helpers/elastic-util";
 
 // import router
 import { useRouter } from "next/router";
 
-export default function NotePage({ params }) {
-  const [note, setNote] = useState({});
+export default function songPage({ params }) {
+  const [song, setsong] = useState({});
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -24,23 +24,23 @@ export default function NotePage({ params }) {
           redirect: "follow",
         };
 
-        fetch("http://localhost:9200/notes/_doc/" + id, requestOptions)
+        fetch("http://localhost:9200/songs/_doc/" + id, requestOptions)
           .then((response) => response.json())
           .then((result) => {
             console.log("result", result);
-            setNote(result._source);
+            setsong(result._source);
           });
       })();
     }
   }, [router]);
 
   useEffect(() => {
-    if (note !== {}) {
+    if (song !== {}) {
       setLoading(false);
     }
-  }, [note]);
+  }, [song]);
 
-  // return a pretty page with the doctype, title, text, and upload date of the note
+  // return a pretty page with the doctype, title, text, and upload date of the song
   return (
     <div>
       {loading ? (
@@ -72,7 +72,7 @@ export default function NotePage({ params }) {
                 alignItems: "flex-start",
               }}
             >
-              <h1>Note Title: {note.title}</h1>
+              <h1>Song Title: {song.title}</h1>
               <div
                 style={{
                   // add a little padding to the text
@@ -81,11 +81,11 @@ export default function NotePage({ params }) {
               >
                 <p>
                   {" "}
-                  <strong>File Type:</strong> {note.doctype}
+                  <strong>Artist:</strong> {song.artist}
                 </p>
                 <p>
                   {" "}
-                  <strong>Upload Date:</strong> {note.upload_date}
+                  <strong>Lyrics:</strong> {song.lyrics}
                 </p>
                 <div></div>
               </div>
@@ -103,8 +103,8 @@ export default function NotePage({ params }) {
               padding: "20px",
             }}
           >
-            {note.text &&
-              note.text.split("\n").map((item, key) => {
+            {song.text &&
+              song.text.split("\n").map((item, key) => {
                 return (
                   <span key={key}>
                     {item}

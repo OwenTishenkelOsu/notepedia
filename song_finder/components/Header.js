@@ -1,5 +1,5 @@
 // This will be the header for the app, which is a navbar
-//  there will be a link to the home page, and a link to the explore data packages page, and a link to the all notes page
+//  there will be a link to the home page, and a link to the explore data packages page, and a link to the all songs page
 
 // use next/link to link to the pages
 import Link from "next/link";
@@ -70,10 +70,10 @@ function Header() {
         <Link href="/" style={linkStyle}>
           Search Songs
         </Link>
-        <Link href="/notes" style={linkStyle}>
+        <Link href="/songs" style={linkStyle}>
           My Songs
         </Link>
-        <Link href="/notes/explore" style={linkStyle}>
+        <Link href="/songs/explore" style={linkStyle}>
           Song Store
         </Link>
       </div>

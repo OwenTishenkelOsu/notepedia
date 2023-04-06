@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 function Explore() {
   const [showModal, setShowModal] = useState(false);
 
-  // build a list of note packages
+  // build a list of song packages
   //   FIXME: refactor to use th correct format for uploading to ElasticSearch
   const packages = [
     {
@@ -16,7 +16,7 @@ function Explore() {
       description:
         "This package contains the textual basis and insights into all of famed author Edgar Allan Poe's greatest works.",
       price: 0.99,
-      notes: [
+      songs: [
         {
           id: 1,
           title: "The Raven",
@@ -50,7 +50,7 @@ function Explore() {
       description:
         "This package contains a collection of documents that delve into the key historical moments of medieval times, offering a comprehensive understanding of the era.",
       price: 1.99,
-      notes: [
+      songs: [
         {
           id: 1,
           title: "The Battle of Hastings",
@@ -84,7 +84,7 @@ function Explore() {
       description:
         "This package contains a collection of documents that explore important stories and moments in Greek mythology, offering a comprehensive understanding of the ancient world's rich mythological tradition.",
       price: 0.99,
-      notes: [
+      songs: [
         {
           id: 1,
           title: "The Twelve Olympians",
@@ -118,7 +118,7 @@ function Explore() {
       description:
         "This package contains a collection of documents that cover key techniques and skills in CAD (Computer-Aided Design) modeling, offering a comprehensive understanding of the tools and methods required to create accurate and efficient digital designs.",
       price: 0.99,
-      notes: [
+      songs: [
         {
           id: 1,
           title: "2D Sketching and Constraints",
@@ -150,9 +150,9 @@ function Explore() {
       id: 5,
       name: "More Coming Soon...",
       description:
-        "Notepedia is constantly expanding its collection of packages. If there is a topic you would like to see, please let us know!",
+        "songpedia is constantly expanding its collection of packages. If there is a topic you would like to see, please let us know!",
       price: 0.0,
-      notes: [],
+      songs: [],
     },
   ];
 
@@ -169,7 +169,7 @@ function Explore() {
   function openPurchase(packageListing) {
     console.log("open purchase", packageListing);
     alert(
-      "The purchase functionality is not yet implemented. Although I almost added Stripe to this in case you wanted to support Notepedia!"
+      "The purchase functionality is not yet implemented. Although I almost added Stripe to this in case you wanted to support songpedia!"
     );
   }
 
@@ -237,10 +237,10 @@ function Explore() {
                     padding: "1rem 1rem",
                   }}
                 >
-                  {packageListing.notes.map((note) => (
-                    <div key={note.id}>
-                      <h3>{note.title}</h3>
-                      <p>{note.description}</p>
+                  {packageListing.songs.map((song) => (
+                    <div key={song.id}>
+                      <h3>{song.title}</h3>
+                      <p>{song.description}</p>
                       <br />
                     </div>
                   ))}
@@ -274,7 +274,7 @@ function Explore() {
                       marginTop: "1rem",
                     }}
                   >
-                    {packageListing.notes.length > 0 && (
+                    {packageListing.songs.length > 0 && (
                       <div>
                         <button
                           style={{

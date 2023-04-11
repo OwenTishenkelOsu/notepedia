@@ -73,9 +73,9 @@ function Header() {
         <Link href="/songs" style={linkStyle}>
           My Songs
         </Link>
-        <Link href="/songs/explore" style={linkStyle}>
+        {/* <Link href="/songs/explore" style={linkStyle}>
           Song Store
-        </Link>
+        </Link> */}
       </div>
     </header>
   );

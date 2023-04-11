@@ -161,7 +161,7 @@ const SearchPage = () => {
         if (data.hits != null && data.hits.hits.length > 0) {
           console.log(typeof data.hits.hits);
           const unclean = data.hits.hits;
-          const clean = unclean.filter((hit) => hit._score > 1);
+          const clean = unclean;//.filter((hit) => hit._score > 1);
           setSearchResults(clean);
         } else {
           setSearchResults([]);
@@ -237,9 +237,9 @@ const SearchPage = () => {
             How it works
           </h2>
           <p>
-            Enter comma seperated song terms (or phrases) to query your
+            Enter comma seperated song lyrics to query your
             knowledge base for the most related songs. After submitting
-            your terms of interest, you will be able to apply more advanced
+            your lyrics of interest, you will be able to apply more advanced
             search parameters. Try it out!{" "}
           </p>
         </div>

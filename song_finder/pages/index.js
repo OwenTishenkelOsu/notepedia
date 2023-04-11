@@ -276,7 +276,7 @@ const SearchPage = () => {
             minWidth: "100px",
           }}
         >
-          <Select
+          {/* <Select
             mode="multiple"
             placeholder="Genre"
             // value is where the "included" property of the fileType object is true
@@ -302,7 +302,7 @@ const SearchPage = () => {
             <Option value="pop">Pop</Option>
             <Option value="rap">Rap</Option>
             
-          </Select>
+          </Select> */}
         </Form.Item>
         {/* FIXME: suggestions */}
         {/* {searchSuggestions && searchSuggestions.length > 0 && (

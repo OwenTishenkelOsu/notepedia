@@ -114,12 +114,16 @@ const SearchPage = () => {
     if (firstSearch) {
       setFirstSearch(false);
     }
+   
 
     // need to decompose the search term into individual words
-    const searchTerms = searchTerm.split(",");
+    var searchTerms = searchTerm.split(",");
     // strip whitespace from each search term
-    console.log(searchTerms);
     
+    console.log(searchTerms);
+  
+    searchTerms = searchTerms.filter(v => v !== '');
+    searchTerms = searchTerms.filter(v => v !== ' ');
       const cleanSearchTerms = searchTerms.map((term) => term.trim());
       
       

@@ -393,7 +393,7 @@ const SearchPage = () => {
           {/* results count if not on first search */}
           {!firstSearch && (
             <p>
-              {searchResults.length} results found for "{searchTerm}".
+              {searchResults.length} results found.
             </p>
           )}
         </div>

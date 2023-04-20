@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { getElasticsongById } from "../../helpers/elastic-util";
+import SpotifyPlayer from "../../components/SpotifyEmbed";
 
 // import router
 import { useRouter } from "next/router";
 
-export default function songPage({ params }) {
+export default function songPage() {
+  const [accessToken, setAccessToken] = useState(null);
+  const [trackId, setTrackId] = useState(null);
+  const [songSearchObj, setSongSearchObj] = useState({
+    title: "",
+    artist: "",
+  });
   const [song, setsong] = useState({});
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -29,16 +36,99 @@ export default function songPage({ params }) {
           .then((result) => {
             console.log("result", result);
             setsong(result._source);
+            setSongSearchObj({
+              title: result._source.title,
+              artist: result._source.artist,
           });
+          })
       })();
     }
   }, [router]);
 
   useEffect(() => {
-    if (song !== {}) {
+    (async () => {
+      const accessTokenObj = await getAccessToken().then((data) => {
+        if (data !== undefined && data !== null)
+          setAccessToken(data.access_token);
+      });
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (accessToken !== undefined && accessToken !== null) {
+      (async () => {
+        const trackId = await getTrackIdByTitleAndArtist(
+          accessToken,
+          songSearchObj.title,
+          songSearchObj.artist
+        );
+          if (trackId !== null){
+            setTrackId(trackId);
+          } else {
+            setLoading(false);
+          }
+      })();
+    }
+  }, [accessToken, songSearchObj]);
+
+  useEffect(() => {
+    if (trackId !== undefined && trackId !== null) {
       setLoading(false);
     }
-  }, [song]);
+  }, [trackId]);
+
+  async function getAccessToken() {
+    const res = fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "client_credentials",
+        client_id: "4044b8fd17944a5d87e6acdc4ebd2a48",
+        client_secret: "6ae39170d790483da1dd01b8b04f8f69",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => console.error(error));
+
+    return res;
+  }
+
+  async function getTrackIdByTitleAndArtist(accessToken, title, artist) {
+
+    // help me build the query
+    const query = `artist:${encodeURIComponent(
+      artist
+    )} track:${encodeURIComponent(title)}`;
+
+    // build the url
+    const url = `https://api.spotify.com/v1/search?q=${query}&type=track`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken,
+      },
+    });
+
+
+    const data = await response.json();
+    const tracks = data.tracks.items;
+    console.log("tracks", tracks);
+
+    if (tracks.length > 0) {
+      return tracks[0].id;
+    } else {
+      return null;
+    }
+  }
+
 
   // return a pretty page with the doctype, title, text, and upload date of the song
   return (
@@ -87,8 +177,17 @@ export default function songPage({ params }) {
                   {" "}
                   <strong>Lyrics:</strong> {song.lyrics}
                 </p>
-                <div></div>
+                
               </div>
+              < br />
+              <div>
+                {/* if the trackId is not null, then display spotify player. otherwise, display a message */}
+                  {trackId !== null ? (
+                    <SpotifyPlayer trackId={trackId} />
+                  ) : (
+                    <p>No Spotify Preview Available</p>
+                  )}
+                </div>
             </div>
           </div>
           <div

@@ -265,17 +265,17 @@ function ResultCards({
 
                 <div style={buttonStyle}>
                   <button
-                    style={openButtonStyle}
+                    style={downloadButtonStyle}
                     onClick={(e) => {
                       e.preventDefault();
                       // open the document in a new tab at route /songs/[song_id]
                       window.open(`/songs/songPage?id=${result._id}`);
                     }}
                   >
-                    Open in Preview
+                    View Song
                   </button>
                   <button
-                    style={downloadButtonStyle}
+                    style={openButtonStyle}
                     onClick={(e) => {
                       e.preventDefault();
                       console.log(result._source);
@@ -294,9 +294,9 @@ function ResultCards({
                       a.remove();
                     }}
                   >
-                    Download
+                    Download as JSON
                   </button>
-                  <button
+                  {/* <button
                     style={deleteButtonStyle}
                     onClick={(e) => {
                       e.preventDefault();
@@ -310,7 +310,7 @@ function ResultCards({
                     //searchresults = cleanedsearchresults (setSearchResults(cleaned))
                   >
                     Delete
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))}

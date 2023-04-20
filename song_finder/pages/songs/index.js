@@ -130,6 +130,7 @@ export default function songIndex() {
                         </strong>
                         {song._source.artist}
                       </p>
+                      < br/>
                       <p>
                         {" "}
                         <strong
@@ -138,7 +139,7 @@ export default function songIndex() {
                             fontSize: "1rem",
                           }}
                         >
-                          Matched Lyrics:{" "}
+                          Lyric Preview:{" "}
                         </strong>
                         {song._source.lyrics?.substring(0, 250) + "..."}
                       </p>
@@ -164,7 +165,7 @@ export default function songIndex() {
                           marginLeft: "auto",
                         }}
                       >
-                        {"Open song"}
+                        View Song
                       </Link>
                     </div>
                   </div>
